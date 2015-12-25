@@ -8,12 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		5258A6151C2D02A100F6C438 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6141C2D02A100F6C438 /* AppDelegate.swift */; };
-		5258A6171C2D02A100F6C438 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6161C2D02A100F6C438 /* ViewController.swift */; };
 		5258A61A1C2D02A100F6C438 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5258A6181C2D02A100F6C438 /* Main.storyboard */; };
 		5258A61C1C2D02A100F6C438 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5258A61B1C2D02A100F6C438 /* Assets.xcassets */; };
 		5258A61F1C2D02A100F6C438 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5258A61D1C2D02A100F6C438 /* LaunchScreen.storyboard */; };
 		5258A62A1C2D02A100F6C438 /* LeafletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6291C2D02A100F6C438 /* LeafletTests.swift */; };
 		5258A6351C2D02A100F6C438 /* LeafletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6341C2D02A100F6C438 /* LeafletUITests.swift */; };
+		5258A64B1C2D044900F6C438 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6431C2D044900F6C438 /* Banner.swift */; };
+		5258A64C1C2D044900F6C438 /* BannerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6441C2D044900F6C438 /* BannerFactory.swift */; };
+		5258A64D1C2D044900F6C438 /* BannerPointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6451C2D044900F6C438 /* BannerPointView.swift */; };
+		5258A64E1C2D044900F6C438 /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6461C2D044900F6C438 /* BannerView.swift */; };
+		5258A64F1C2D044900F6C438 /* GCD+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6471C2D044900F6C438 /* GCD+extension.swift */; };
+		5258A6501C2D044900F6C438 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6481C2D044900F6C438 /* String+Extension.swift */; };
+		5258A6511C2D044900F6C438 /* UICountingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5258A64A1C2D044900F6C438 /* UICountingLabel.m */; };
+		5258A6531C2D046B00F6C438 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6521C2D046B00F6C438 /* ViewController.swift */; };
+		5258A6571C2D079200F6C438 /* Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6541C2D079200F6C438 /* Onboard.swift */; };
+		5258A6581C2D079200F6C438 /* OnboardFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6551C2D079200F6C438 /* OnboardFactory.swift */; };
+		5258A6591C2D079200F6C438 /* OnboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6561C2D079200F6C438 /* OnboardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +46,6 @@
 /* Begin PBXFileReference section */
 		5258A6111C2D02A100F6C438 /* Leaflet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leaflet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5258A6141C2D02A100F6C438 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5258A6161C2D02A100F6C438 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		5258A6191C2D02A100F6C438 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5258A61B1C2D02A100F6C438 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5258A61E1C2D02A100F6C438 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +56,19 @@
 		5258A6301C2D02A100F6C438 /* LeafletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeafletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5258A6341C2D02A100F6C438 /* LeafletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeafletUITests.swift; sourceTree = "<group>"; };
 		5258A6361C2D02A100F6C438 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5258A6431C2D044900F6C438 /* Banner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
+		5258A6441C2D044900F6C438 /* BannerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerFactory.swift; sourceTree = "<group>"; };
+		5258A6451C2D044900F6C438 /* BannerPointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerPointView.swift; sourceTree = "<group>"; };
+		5258A6461C2D044900F6C438 /* BannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
+		5258A6471C2D044900F6C438 /* GCD+extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GCD+extension.swift"; sourceTree = "<group>"; };
+		5258A6481C2D044900F6C438 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		5258A6491C2D044900F6C438 /* UICountingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICountingLabel.h; sourceTree = "<group>"; };
+		5258A64A1C2D044900F6C438 /* UICountingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICountingLabel.m; sourceTree = "<group>"; };
+		5258A6521C2D046B00F6C438 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		5258A6541C2D079200F6C438 /* Onboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Onboard.swift; sourceTree = "<group>"; };
+		5258A6551C2D079200F6C438 /* OnboardFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardFactory.swift; sourceTree = "<group>"; };
+		5258A6561C2D079200F6C438 /* OnboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardView.swift; sourceTree = "<group>"; };
+		5258A65A1C2D07AB00F6C438 /* WhisperDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WhisperDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +120,9 @@
 			isa = PBXGroup;
 			children = (
 				5258A6141C2D02A100F6C438 /* AppDelegate.swift */,
-				5258A6161C2D02A100F6C438 /* ViewController.swift */,
+				5258A6521C2D046B00F6C438 /* ViewController.swift */,
+				5258A65A1C2D07AB00F6C438 /* WhisperDemo-Bridging-Header.h */,
+				5258A6421C2D044900F6C438 /* Source */,
 				5258A6181C2D02A100F6C438 /* Main.storyboard */,
 				5258A61B1C2D02A100F6C438 /* Assets.xcassets */,
 				5258A61D1C2D02A100F6C438 /* LaunchScreen.storyboard */,
@@ -123,6 +147,24 @@
 				5258A6361C2D02A100F6C438 /* Info.plist */,
 			);
 			path = LeafletUITests;
+			sourceTree = "<group>";
+		};
+		5258A6421C2D044900F6C438 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				5258A6541C2D079200F6C438 /* Onboard.swift */,
+				5258A6551C2D079200F6C438 /* OnboardFactory.swift */,
+				5258A6561C2D079200F6C438 /* OnboardView.swift */,
+				5258A6431C2D044900F6C438 /* Banner.swift */,
+				5258A6441C2D044900F6C438 /* BannerFactory.swift */,
+				5258A6451C2D044900F6C438 /* BannerPointView.swift */,
+				5258A6461C2D044900F6C438 /* BannerView.swift */,
+				5258A6471C2D044900F6C438 /* GCD+extension.swift */,
+				5258A6481C2D044900F6C438 /* String+Extension.swift */,
+				5258A6491C2D044900F6C438 /* UICountingLabel.h */,
+				5258A64A1C2D044900F6C438 /* UICountingLabel.m */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,8 +298,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5258A6171C2D02A100F6C438 /* ViewController.swift in Sources */,
+				5258A6501C2D044900F6C438 /* String+Extension.swift in Sources */,
+				5258A64C1C2D044900F6C438 /* BannerFactory.swift in Sources */,
+				5258A6511C2D044900F6C438 /* UICountingLabel.m in Sources */,
+				5258A6571C2D079200F6C438 /* Onboard.swift in Sources */,
+				5258A6591C2D079200F6C438 /* OnboardView.swift in Sources */,
+				5258A6531C2D046B00F6C438 /* ViewController.swift in Sources */,
+				5258A64E1C2D044900F6C438 /* BannerView.swift in Sources */,
+				5258A64D1C2D044900F6C438 /* BannerPointView.swift in Sources */,
 				5258A6151C2D02A100F6C438 /* AppDelegate.swift in Sources */,
+				5258A6581C2D079200F6C438 /* OnboardFactory.swift in Sources */,
+				5258A64B1C2D044900F6C438 /* Banner.swift in Sources */,
+				5258A64F1C2D044900F6C438 /* GCD+extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +455,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gomeeki.Leaflet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Leaflet/WhisperDemo-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -414,6 +467,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gomeeki.Leaflet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Leaflet/WhisperDemo-Bridging-Header.h";
 			};
 			name = Release;
 		};
