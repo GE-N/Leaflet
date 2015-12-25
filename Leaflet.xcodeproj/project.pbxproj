@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		523FCBDE1C2D5C2000F5BE92 /* LeafletType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523FCBDD1C2D5C2000F5BE92 /* LeafletType.swift */; };
 		5258A6151C2D02A100F6C438 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6141C2D02A100F6C438 /* AppDelegate.swift */; };
 		5258A61A1C2D02A100F6C438 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5258A6181C2D02A100F6C438 /* Main.storyboard */; };
 		5258A61C1C2D02A100F6C438 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5258A61B1C2D02A100F6C438 /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 		5258A6571C2D079200F6C438 /* Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6541C2D079200F6C438 /* Onboard.swift */; };
 		5258A6581C2D079200F6C438 /* OnboardFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6551C2D079200F6C438 /* OnboardFactory.swift */; };
 		5258A6591C2D079200F6C438 /* OnboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A6561C2D079200F6C438 /* OnboardView.swift */; };
+		5258A65C1C2D0B2200F6C438 /* LeafletFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258A65B1C2D0B2200F6C438 /* LeafletFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		523FCBDD1C2D5C2000F5BE92 /* LeafletType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeafletType.swift; sourceTree = "<group>"; };
 		5258A6111C2D02A100F6C438 /* Leaflet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leaflet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5258A6141C2D02A100F6C438 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5258A6191C2D02A100F6C438 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -69,6 +72,7 @@
 		5258A6551C2D079200F6C438 /* OnboardFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardFactory.swift; sourceTree = "<group>"; };
 		5258A6561C2D079200F6C438 /* OnboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardView.swift; sourceTree = "<group>"; };
 		5258A65A1C2D07AB00F6C438 /* WhisperDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WhisperDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		5258A65B1C2D0B2200F6C438 /* LeafletFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeafletFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +156,8 @@
 		5258A6421C2D044900F6C438 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				5258A65B1C2D0B2200F6C438 /* LeafletFactory.swift */,
+				523FCBDD1C2D5C2000F5BE92 /* LeafletType.swift */,
 				5258A6541C2D079200F6C438 /* Onboard.swift */,
 				5258A6551C2D079200F6C438 /* OnboardFactory.swift */,
 				5258A6561C2D079200F6C438 /* OnboardView.swift */,
@@ -298,6 +304,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5258A65C1C2D0B2200F6C438 /* LeafletFactory.swift in Sources */,
 				5258A6501C2D044900F6C438 /* String+Extension.swift in Sources */,
 				5258A64C1C2D044900F6C438 /* BannerFactory.swift in Sources */,
 				5258A6511C2D044900F6C438 /* UICountingLabel.m in Sources */,
@@ -308,6 +315,7 @@
 				5258A64D1C2D044900F6C438 /* BannerPointView.swift in Sources */,
 				5258A6151C2D02A100F6C438 /* AppDelegate.swift in Sources */,
 				5258A6581C2D079200F6C438 /* OnboardFactory.swift in Sources */,
+				523FCBDE1C2D5C2000F5BE92 /* LeafletType.swift in Sources */,
 				5258A64B1C2D044900F6C438 /* Banner.swift in Sources */,
 				5258A64F1C2D044900F6C438 /* GCD+extension.swift in Sources */,
 			);
@@ -538,6 +546,7 @@
 				5258A63B1C2D02A100F6C438 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5258A63C1C2D02A100F6C438 /* Build configuration list for PBXNativeTarget "LeafletTests" */ = {
 			isa = XCConfigurationList;
@@ -546,6 +555,7 @@
 				5258A63E1C2D02A100F6C438 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5258A63F1C2D02A100F6C438 /* Build configuration list for PBXNativeTarget "LeafletUITests" */ = {
 			isa = XCConfigurationList;
@@ -554,6 +564,7 @@
 				5258A6411C2D02A100F6C438 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

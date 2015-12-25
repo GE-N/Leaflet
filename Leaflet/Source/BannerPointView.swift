@@ -57,9 +57,9 @@ public class BannerPointView : UIView, BannerDelegate {
     didSet { setupFrame() }
   }
   
-  var style: BannerViewStyle? {
-    didSet { setupStyle() }
-  }
+//  var style: BannerViewStyle? {
+//    didSet { setupStyle() }
+//  }
   
   init(point: Int16, adder: Int16, details: String) {
     super.init(frame: CGRectZero)
@@ -84,24 +84,24 @@ public class BannerPointView : UIView, BannerDelegate {
     
     textLabel.frame.size.width = screenWidth - CGRectGetMinX(detailsLabel.frame) - (Dimension.offset * 2)
     
-    if let imageName = delegate.bannerImageName() {
-      addSubview(imageView)
-      imageView.frame.origin = CGPointMake(Dimension.offset, Dimension.offset)
-      imageView.frame.size = Dimension.imageSize
-      imageView.image = UIImage(named: imageName)
-      
-      let widthForImageView = Dimension.imageSize.width + Dimension.offset
-      textLabel.frame.origin.x += widthForImageView
-      textLabel.frame.size.width -= widthForImageView
-    }
+//    if let imageName = delegate.bannerImageName() {
+//      addSubview(imageView)
+//      imageView.frame.origin = CGPointMake(Dimension.offset, Dimension.offset)
+//      imageView.frame.size = Dimension.imageSize
+//      imageView.image = UIImage(named: imageName)
+//      
+//      let widthForImageView = Dimension.imageSize.width + Dimension.offset
+//      textLabel.frame.origin.x += widthForImageView
+//      textLabel.frame.size.width -= widthForImageView
+//    }
     
     frame = delegate.onViewController().view.frame
     frame.size.height = CGRectGetHeight(textLabel.frame) + (Dimension.offset * 2)
   }
   
-  func setupStyle() {
-    backgroundColor = style?.backgroundColor()
-  }
+//  func setupStyle() {
+//    backgroundColor = style?.backgroundColor()
+//  }
   
   private func initiateLabel(label: UILabel) {
     label.font = bannerFont

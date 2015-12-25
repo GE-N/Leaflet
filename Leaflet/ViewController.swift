@@ -11,7 +11,7 @@ import UIKit
 class ViewController : UIViewController {
   lazy var genericBannerButton: UIButton = {
     let button = UIButton()
-    button.setTitle("Generic Banner", forState: .Normal)
+    button.setTitle("Leaflet: Multiline with action banner", forState: .Normal)
     button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
     button.layer.borderColor = UIColor.grayColor().CGColor
     button.layer.borderWidth = 1
@@ -22,7 +22,7 @@ class ViewController : UIViewController {
   
   lazy var genericCenter: UIButton = {
     let button = UIButton()
-    button.setTitle("Generic with Center Alignment", forState: .Normal)
+    button.setTitle("Leaflet: Banner text alignment center", forState: .Normal)
     button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
     button.layer.borderColor = UIColor.grayColor().CGColor
     button.layer.borderWidth = 1
@@ -52,7 +52,18 @@ class ViewController : UIViewController {
     button.backgroundColor = UIColor.lightGrayColor()
     
     return button
-    }()
+  }()
+  
+  lazy var leafletButton: UIButton = {
+    let button = UIButton()
+    button.setTitle("Leaflet: Generic Banner", forState: .Normal)
+    button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+    button.layer.borderColor = UIColor.grayColor().CGColor
+    button.layer.borderWidth = 1
+    button.backgroundColor = UIColor.lightGrayColor()
+    
+    return button
+  }()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -72,6 +83,10 @@ class ViewController : UIViewController {
     view.addSubview(onboardButton)
     onboardButton.addTarget(self, action: "onboardButtonDidPress:", forControlEvents: .TouchUpInside)
     
+    view.addSubview(leafletButton)
+    leafletButton.addTarget(self, action: "leafletButtonDidPress:", forControlEvents: .TouchUpInside)
+    
+    
     setLayout()
   }
   
@@ -88,6 +103,7 @@ class ViewController : UIViewController {
     genericCenter.frame = CGRectMake(offset, yPosNextTo(genericBannerButton), buttonWidth, buttonHeight)
     tokenUpdateButton.frame = CGRectMake(offset, yPosNextTo(genericCenter), buttonWidth, buttonHeight)
     onboardButton.frame = CGRectMake(offset, yPosNextTo(tokenUpdateButton), buttonWidth, buttonHeight)
+    leafletButton.frame = CGRectMake(offset, yPosNextTo(onboardButton), buttonWidth, buttonHeight)
   }
 }
 
@@ -96,19 +112,22 @@ class ViewController : UIViewController {
 extension ViewController {
   func genericBannerTapped(sender: UIButton) {
     let multilineText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ***** You can swipe up on this banner for dismiss *****"
-    var body = BannerBody(type: .Generic(text: multilineText, imageName: "lightblue-led", alignment: .Left))
-    body.supportSwipeUpForDismiss = true
-    body.tapAction = { print("tapped on banner") }
+    let banner = InformBanner(title: multilineText, imageName: nil)
+    let style = InformStyle()
+    var interact = InformInteract()
+    interact.canSwipeUpForDismiss = true
+    interact.tapAction = { print("Tapped in banner!!") }
     
-    Banner(body, to: self)
+    Leaflet(.Generic(banner, style, interact), on: self)
   }
   
   func genericCenterTapped(sender: UIButton) {
-    let text = "Connection lost"
-    let body = BannerBody(type: .Generic(text: text, imageName: nil, alignment: .Center))
-    Banner(body, to: self)
+    let banner = InformBanner(title: "Connection lost", imageName: "lightblue-led")
+    var style = InformStyle()
+    style.alignment = .Center
     
-    ClearBanner(self, after: 2)
+    Leaflet(.Generic(banner, style, nil), on: self)
+    TearOff(from: self, after: 2)
   }
   
   func tokenUpdateTapped(sender: UIButton) {
@@ -133,5 +152,16 @@ extension ViewController {
     
     Onboard(board, to: self)
     //    Clearboard(self, after: 3)
+  }
+  
+  func leafletButtonDidPress(sender: UIButton) {
+    let multilineText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ***** You can swipe up on this banner for dismiss *****"
+    let banner = InformBanner(title: multilineText, imageName: nil)
+    let style = InformStyle()
+    var interact = InformInteract()
+    interact.canSwipeUpForDismiss = true
+    interact.tapAction = { print("Tapped in banner!!") }
+    
+    Leaflet(.Generic(banner, style, interact), on: self)
   }
 }

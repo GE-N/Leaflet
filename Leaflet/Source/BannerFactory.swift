@@ -18,9 +18,9 @@ public func ClearBanner(viewController: UIViewController, after: NSTimeInterval 
   bannerFactory.demolish(viewController, after: after)
 }
 
+// TODO: remove duplicate protocol.
 protocol BannerDelegate {
-  var delegate: BannerViewDelegate! { get set }
-  var style: BannerViewStyle? { get set }
+//  var delegate: BannerViewDelegate! { get set }
 }
 
 class BannerFactory: NSObject {
@@ -54,8 +54,8 @@ class BannerFactory: NSObject {
     
     bannerDetails = details
     presentVC = vc
-    bannerView.style = self
-    bannerView.delegate = self
+//    bannerView.style = self
+//    bannerView.delegate = self
     
     if let view = bannerView as? UIView {
       if details.supportSwipeUpForDismiss {
@@ -140,12 +140,12 @@ extension BannerFactory : BannerViewDelegate {
   }
 }
 
-extension BannerFactory : BannerViewStyle {
-  func labelTextAlignment() -> NSTextAlignment? {
-    return bannerDetails.textAlignment
-  }
-  
-  func backgroundColor() -> UIColor {
-    return bannerDetails.color
-  }
-}
+//extension BannerFactory : BannerViewStyle {
+//  func labelTextAlignment() -> NSTextAlignment? {
+//    return bannerDetails.textAlignment
+//  }
+//  
+//  func backgroundColor() -> UIColor {
+//    return bannerDetails.color
+//  }
+//}
