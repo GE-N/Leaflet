@@ -17,7 +17,7 @@ Leaflet is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod "Leaflet"
+pod "Leaflet", :git => "https://github.com/GE-N/Leaflet.git"
 ```
 
 ## Author
