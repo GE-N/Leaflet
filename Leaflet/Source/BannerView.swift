@@ -23,7 +23,7 @@ public protocol GenericInteract {
   var tapAction: (() -> Void)? { get }
 }
 
-public class BannerView : UIView, BannerDelegate, LeafletItem {
+public class BannerView : UIView, LeafletItem {
   struct Dimension {
     static let offset: CGFloat = 8
     static let imageSize = CGSizeMake(12, 12)

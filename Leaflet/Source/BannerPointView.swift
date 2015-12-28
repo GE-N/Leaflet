@@ -13,7 +13,7 @@ public protocol PointUpdateBanner : GenericBanner {
   var adder: Int16 { get }
 }
 
-public class BannerPointView : UIView, BannerDelegate, LeafletItem {
+public class BannerPointView : UIView, LeafletItem {
   struct Dimension {
     static let offset: CGFloat = 8
     static let width: CGFloat = screenWidth
