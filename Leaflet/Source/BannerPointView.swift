@@ -8,7 +8,12 @@
 
 import UIKit
 
-public class BannerPointView : UIView, BannerDelegate {
+public protocol PointUpdateBanner : GenericBanner {
+  var augend: Int16 { get }
+  var adder: Int16 { get }
+}
+
+public class BannerPointView : UIView, BannerDelegate, LeafletItem {
   struct Dimension {
     static let offset: CGFloat = 8
     static let width: CGFloat = screenWidth
@@ -51,57 +56,36 @@ public class BannerPointView : UIView, BannerDelegate {
   lazy private(set) var transformViews: [UIView] = [self.textLabel, self.detailsLabel]
   
   var points: Int16!
-  var addition: Int16!
+  var adder: Int16!
   
   var delegate: BannerViewDelegate! {
     didSet { setupFrame() }
   }
   
-//  var style: BannerViewStyle? {
-//    didSet { setupStyle() }
-//  }
+  var details: PointUpdateBanner! {
+    didSet {
+      points = details.augend
+      adder = details.adder
+      textLabel.countFrom(CGFloat(points), to: CGFloat(points), withDuration: 0)
+      detailsLabel.text = "\(adderWithSigned(adder)) : \(details.title)"
+      if details.imageName != nil {
+        imageView.image = UIImage(named: details.imageName!)
+      }
+    }
+  }
   
-  init(point: Int16, adder: Int16, details: String) {
+  var style: LeafletStyle? {
+    didSet { setupStyle() }
+  }
+  
+  init() {
     super.init(frame: CGRectZero)
     transformViews.forEach { addSubview($0) }
-    
-    points = point
-    addition = adder
-    
-    textLabel.countFrom(CGFloat(point), to: CGFloat(point), withDuration: 0)
-    detailsLabel.text = "\(adderWithSigned(adder)) : \(details)"
   }
 
   private func adderWithSigned(adder: Int16) -> String {
     return adder >= 0 ? "+\(adder)" : "\(adder)"
   }
-  
-  func setupFrame() {
-    transformViews.forEach { initiateLabel($0 as! UILabel) }
-    textLabel.frame.origin = CGPointMake(Dimension.offset, Dimension.offset)
-    detailsLabel.frame.origin.x = screenWidth - Dimension.offset - CGRectGetWidth(detailsLabel.frame)
-    detailsLabel.frame.origin.y = Dimension.offset
-    
-    textLabel.frame.size.width = screenWidth - CGRectGetMinX(detailsLabel.frame) - (Dimension.offset * 2)
-    
-//    if let imageName = delegate.bannerImageName() {
-//      addSubview(imageView)
-//      imageView.frame.origin = CGPointMake(Dimension.offset, Dimension.offset)
-//      imageView.frame.size = Dimension.imageSize
-//      imageView.image = UIImage(named: imageName)
-//      
-//      let widthForImageView = Dimension.imageSize.width + Dimension.offset
-//      textLabel.frame.origin.x += widthForImageView
-//      textLabel.frame.size.width -= widthForImageView
-//    }
-    
-    frame = delegate.onViewController().view.frame
-    frame.size.height = CGRectGetHeight(textLabel.frame) + (Dimension.offset * 2)
-  }
-  
-//  func setupStyle() {
-//    backgroundColor = style?.backgroundColor()
-//  }
   
   private func initiateLabel(label: UILabel) {
     label.font = bannerFont
@@ -110,11 +94,41 @@ public class BannerPointView : UIView, BannerDelegate {
   
   func beginAnimation() {
     gcdDelay(0.5){ [unowned self] in
-      self.textLabel.countFrom(CGFloat(self.points), to: CGFloat(self.points + self.addition), withDuration: 1)
+      self.textLabel.countFrom(CGFloat(self.points), to: CGFloat(self.points + self.adder), withDuration: 1)
     }
   }
   
   required public init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+}
+
+// MARK: Layout
+
+extension BannerPointView {
+  private func setupFrame() {
+    transformViews.forEach { initiateLabel($0 as! UILabel) }
+    textLabel.frame.origin = CGPointMake(Dimension.offset, Dimension.offset)
+    detailsLabel.frame.origin.x = screenWidth - Dimension.offset - CGRectGetWidth(detailsLabel.frame)
+    detailsLabel.frame.origin.y = Dimension.offset
+    
+    textLabel.frame.size.width = screenWidth - CGRectGetMinX(detailsLabel.frame) - (Dimension.offset * 2)
+    
+    if details.imageName != nil {
+      addSubview(imageView)
+      imageView.frame.origin = CGPointMake(Dimension.offset, Dimension.offset)
+      imageView.frame.size = Dimension.imageSize
+      
+      let widthForImageView = Dimension.imageSize.width + Dimension.offset
+      textLabel.frame.origin.x += widthForImageView
+      textLabel.frame.size.width -= widthForImageView
+    }
+    
+    frame = delegate.onViewController().view.frame
+    frame.size.height = CGRectGetHeight(textLabel.frame) + (Dimension.offset * 2)
+  }
+  
+  private func setupStyle() {
+    backgroundColor = style?.backgroundColor
   }
 }

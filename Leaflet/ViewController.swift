@@ -33,7 +33,7 @@ class ViewController : UIViewController {
   
   lazy var tokenUpdateButton: UIButton = {
     let button = UIButton()
-    button.setTitle("Token update", forState: .Normal)
+    button.setTitle("Leaflet: Token update", forState: .Normal)
     button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
     button.layer.borderColor = UIColor.grayColor().CGColor
     button.layer.borderWidth = 1
@@ -131,11 +131,10 @@ extension ViewController {
   }
   
   func tokenUpdateTapped(sender: UIButton) {
-    let type = BannerType.Update(point: 13000, add: -1000, text: "Profile updated.")
-    let body = BannerBody(type: type)
+    let banner = PointBanner(augend: 12000, adder: -1000, title: "Loose a game", iconName: "token")
     
-    Banner(body, to: self)
-    ClearBanner(self, after: 3)
+    Leaflet(.PointUpdate(banner, nil), on: self)
+    TearOff(from: self, after: 3)
   }
   
   func onboardButtonDidPress(button: UIButton) {

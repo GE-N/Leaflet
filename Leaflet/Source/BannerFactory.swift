@@ -49,7 +49,7 @@ class BannerFactory: NSObject {
     
     switch details.type {
     case .Generic: bannerView = BannerView()
-    case .Update(let point, let add, let text): bannerView = BannerPointView(point: point, adder: add, details: text)
+    case .Update: bannerView = BannerPointView()
     }
     
     bannerDetails = details

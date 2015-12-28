@@ -17,11 +17,6 @@ public protocol GenericBanner {
   var imageName: String? { get }
 }
 
-public protocol GenericStyle {
-  var alignment: NSTextAlignment? { get }
-  var backgroundColor: UIColor? { get }
-}
-
 public protocol GenericInteract {
   var canSwipeUpForDismiss: Bool { get }
   var tapAction: (() -> Void)? { get }

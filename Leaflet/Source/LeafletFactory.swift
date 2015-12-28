@@ -14,7 +14,7 @@ protocol LeafletItem {
 
 public enum LeafletType {
   case Generic(GenericBanner, GenericStyle?, GenericInteract?)
-  case Update
+  case PointUpdate(PointUpdateBanner, LeafletStyle?)
   case Onboard
 }
 
@@ -26,7 +26,7 @@ struct AnimationTiming {
   static let totalDelay: NSTimeInterval = popUp + movement * 2
 }
 
-let leafletFactory =  LeafletFactory()
+let leafletFactory: LeafletFactory =  LeafletFactory()
 
 public func Leaflet(type: LeafletType, on viewController: UIViewController) {
   leafletFactory.stick(type, on: viewController)
@@ -58,7 +58,12 @@ class LeafletFactory {
         genericBannerView.style = style ?? InformStyle()
         genericBannerView.interact = interact
       }
-    case .Update:  break
+    case .PointUpdate(let banner, let style):
+      leaflet = BannerPointView()
+      if let pointBannerView = leaflet as? BannerPointView {
+        pointBannerView.details = banner
+        pointBannerView.style = style ?? DefaultStyle()
+      }
     case .Onboard: break
     }
     
@@ -69,8 +74,8 @@ class LeafletFactory {
   
   func tearOff(from viewController: UIViewController, after delay: NSTimeInterval = 0) {
     // ??? : What's the fuck unrecognize delayFired: method.
-    //    timer.invalidate()
-    //    timer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: "delayFired:", userInfo: nil, repeats: false)
+//        timer.invalidate()
+//        timer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: "delayFired:", userInfo: nil, repeats: false)
     
     gcdDelay(delay){ self.dismissView() }
   }
