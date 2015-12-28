@@ -41,7 +41,7 @@ public func TearOff(from viewController: UIViewController, after delay: NSTimeIn
   leafletFactory.tearOff(from: viewController, after: delay!)
 }
 
-class LeafletFactory {
+class LeafletFactory : NSObject {
   var leaflet: LeafletItem!
   var presentOnVC: UIViewController!
   var presentation: LeafletPresentation = .Top
@@ -86,11 +86,8 @@ class LeafletFactory {
   }
   
   func tearOff(from viewController: UIViewController, after delay: NSTimeInterval = 0) {
-    // ??? : What's the fuck unrecognize delayFired: method.
-//        timer.invalidate()
-//        timer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: "delayFired:", userInfo: nil, repeats: false)
-    
-    gcdDelay(delay){ self.dismissView() }
+    timer.invalidate()
+    timer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: "delayFired:", userInfo: nil, repeats: false)
   }
   
   func delayFired(timer: NSTimer) {
