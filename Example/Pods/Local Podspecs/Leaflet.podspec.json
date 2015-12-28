@@ -1,0 +1,25 @@
+{
+  "name": "Leaflet",
+  "version": "0.1.0",
+  "summary": "A simple event notify by Swift",
+  "description": "Simple event notify on UIViewController by Swift.",
+  "homepage": "https://github.com/GE-N/Leaflet",
+  "license": "MIT",
+  "authors": {
+    "Jerapong Nampetch": "jerapong@gomeeki.com"
+  },
+  "source": {
+    "git": "https://github.com/GE-N/Leaflet.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "requires_arc": true,
+  "source_files": "Pod/Classes/**/*",
+  "resource_bundles": {
+    "Leaflet": [
+      "Pod/Assets/*.png"
+    ]
+  }
+}

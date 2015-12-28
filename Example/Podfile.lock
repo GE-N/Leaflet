@@ -1,0 +1,14 @@
+PODS:
+  - Leaflet (0.1.0)
+
+DEPENDENCIES:
+  - Leaflet (from `../`)
+
+EXTERNAL SOURCES:
+  Leaflet:
+    :path: ../
+
+SPEC CHECKSUMS:
+  Leaflet: bb94f68735ae9083953b7b2044a1e6824b54805a
+
+COCOAPODS: 0.39.0
