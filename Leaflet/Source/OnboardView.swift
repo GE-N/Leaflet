@@ -116,6 +116,13 @@ public class OnboardView: UIView, LeafletItem {
       setupFrames()
     }
   }
+  
+  var style: LeafletStyle? {
+    didSet {
+      backgroundColor = style?.backgroundColor
+    }
+  }
+  
   var tapAction: UITapGestureRecognizer?
   
   init() {

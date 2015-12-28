@@ -149,7 +149,7 @@ extension ViewController {
       TearOff(from: self, after: 0)
     }
     
-    Leaflet(.Onboard(board), on: self)
+    Leaflet(.Onboard(board, nil), on: self)
   }
   
   func onboardNoActionDidPress(sender: UIButton) {
@@ -159,5 +159,5 @@ extension ViewController {
     var board = Onboard(title: boardText, iconName: iconName)
     board.setTapAction { print("tapped on Onboard") }
     
-    Leaflet(.Onboard(board), on: self)  }
+    Leaflet(.Onboard(board, nil), on: self)  }
 }
