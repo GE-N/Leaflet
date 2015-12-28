@@ -11,7 +11,7 @@ import UIKit
 class ViewController : UIViewController {
   lazy var genericBannerButton: UIButton = {
     let button = UIButton()
-    button.setTitle("Leaflet: Multiline with action banner", forState: .Normal)
+    button.setTitle("Multiline with action banner", forState: .Normal)
     button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
     button.layer.borderColor = UIColor.grayColor().CGColor
     button.layer.borderWidth = 1
@@ -22,7 +22,7 @@ class ViewController : UIViewController {
   
   lazy var genericCenter: UIButton = {
     let button = UIButton()
-    button.setTitle("Leaflet: Banner text alignment center", forState: .Normal)
+    button.setTitle("Banner text alignment center", forState: .Normal)
     button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
     button.layer.borderColor = UIColor.grayColor().CGColor
     button.layer.borderWidth = 1
@@ -33,7 +33,7 @@ class ViewController : UIViewController {
   
   lazy var tokenUpdateButton: UIButton = {
     let button = UIButton()
-    button.setTitle("Leaflet: Token update", forState: .Normal)
+    button.setTitle("Token update", forState: .Normal)
     button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
     button.layer.borderColor = UIColor.grayColor().CGColor
     button.layer.borderWidth = 1
@@ -45,7 +45,7 @@ class ViewController : UIViewController {
   lazy var onboardButton: UIButton = { [unowned self] in
     let button = UIButton()
     button.addTarget(self, action: "onboardButtonDidPress:", forControlEvents: .TouchUpInside)
-    button.setTitle("Onboard", forState: .Normal)
+    button.setTitle("Onboard with options", forState: .Normal)
     button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
     button.layer.borderColor = UIColor.grayColor().CGColor
     button.layer.borderWidth = 1
@@ -54,9 +54,9 @@ class ViewController : UIViewController {
     return button
   }()
   
-  lazy var leafletButton: UIButton = {
+  lazy var onboardNoOption: UIButton = {
     let button = UIButton()
-    button.setTitle("Leaflet: Generic Banner", forState: .Normal)
+    button.setTitle("Onboard without option", forState: .Normal)
     button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
     button.layer.borderColor = UIColor.grayColor().CGColor
     button.layer.borderWidth = 1
@@ -68,7 +68,7 @@ class ViewController : UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    title = "Fantribe events"
+    title = "Leaflet events"
     view.backgroundColor = UIColor.whiteColor()
     
     view.addSubview(genericBannerButton)
@@ -83,8 +83,8 @@ class ViewController : UIViewController {
     view.addSubview(onboardButton)
     onboardButton.addTarget(self, action: "onboardButtonDidPress:", forControlEvents: .TouchUpInside)
     
-    view.addSubview(leafletButton)
-    leafletButton.addTarget(self, action: "leafletButtonDidPress:", forControlEvents: .TouchUpInside)
+    view.addSubview(onboardNoOption)
+    onboardNoOption.addTarget(self, action: "onboardNoActionDidPress:", forControlEvents: .TouchUpInside)
     
     
     setLayout()
@@ -103,7 +103,7 @@ class ViewController : UIViewController {
     genericCenter.frame = CGRectMake(offset, yPosNextTo(genericBannerButton), buttonWidth, buttonHeight)
     tokenUpdateButton.frame = CGRectMake(offset, yPosNextTo(genericCenter), buttonWidth, buttonHeight)
     onboardButton.frame = CGRectMake(offset, yPosNextTo(tokenUpdateButton), buttonWidth, buttonHeight)
-    leafletButton.frame = CGRectMake(offset, yPosNextTo(onboardButton), buttonWidth, buttonHeight)
+    onboardNoOption.frame = CGRectMake(offset, yPosNextTo(onboardButton), buttonWidth, buttonHeight)
   }
 }
 
@@ -138,29 +138,26 @@ extension ViewController {
   }
   
   func onboardButtonDidPress(button: UIButton) {
-    var board = Board(text: "Hello, I'm here. I'm board. You know me? Yes, you are.Hello, I'm here. I'm board. You know me? Yes, you are.Hello, I'm here. I'm board. You know me? Yes, you are.Hello, I'm here. I'm board. You know me? Yes, you are.",
-      image: UIImage(named: "star")) { Void in
-        print("tapped on Onboard")
-    }
-    board.setSelectionActions(accept: { () -> Void in
-      print("Accepted")
-      }) { [unowned self] Void in
-        print("Rejected")
-        Clearboard(self)
+    let boardText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    let iconName = "star"
+    
+    var board = Onboard(title: boardText, iconName: iconName)
+    board.setTapAction { print("tapped on Onboard") }
+    board.setAcceptAction { print("Accepted") }
+    board.setDeniedAction { [unowned self] in
+      print("Denied")
+      TearOff(from: self, after: 0)
     }
     
-    Onboard(board, to: self)
-    //    Clearboard(self, after: 3)
+    Leaflet(.Onboard(board), on: self)
   }
   
-  func leafletButtonDidPress(sender: UIButton) {
-    let multilineText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ***** You can swipe up on this banner for dismiss *****"
-    let banner = InformBanner(title: multilineText, imageName: nil)
-    let style = InformStyle()
-    var interact = InformInteract()
-    interact.canSwipeUpForDismiss = true
-    interact.tapAction = { print("Tapped in banner!!") }
+  func onboardNoActionDidPress(sender: UIButton) {
+    let boardText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    let iconName = "star"
     
-    Leaflet(.Generic(banner, style, interact), on: self)
-  }
+    var board = Onboard(title: boardText, iconName: iconName)
+    board.setTapAction { print("tapped on Onboard") }
+    
+    Leaflet(.Onboard(board), on: self)  }
 }

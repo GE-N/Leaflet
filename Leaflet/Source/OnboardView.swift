@@ -23,11 +23,20 @@ let onboardCloseButtonFrame = CGRectMake(
   onboardCloseButtonSize.width,
   onboardCloseButtonSize.height)
 
-protocol OnboardViewDelegate {
+public protocol OnboardViewDelegate {
   func dismissFromViewController() -> UIViewController
 }
 
-public class OnboardView: UIView {
+public protocol OnboardBanner {
+  var title: String! { get }
+  var iconName: String? { get }
+  var tapAction: (Void -> ())? { get }
+  var acceptAction: (Void -> ())? { get }
+  var deniedAction: (Void -> ())? { get }
+  var presentation: LeafletPresentation! { get }
+}
+
+public class OnboardView: UIView, LeafletItem {
   public lazy var textLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .Left
@@ -82,47 +91,49 @@ public class OnboardView: UIView {
   lazy private(set) var transformViews: [UIView] =
   [self.textLabel, self.boardImageView, self.acceptButton, self.rejectButton, self.closeButton]
   
-  var board: Board!
-  var delegate: OnboardViewDelegate?
+  var delegate: BannerViewDelegate! {
+    didSet { setupFrames() }
+  }
+  
+  var details: OnboardBanner! {
+    didSet {
+      textLabel.text = details.title
+      textLabel.sizeToFit()
+      
+      if details.iconName != nil {
+        boardImageView.image = UIImage(named: details.iconName!)
+      }
+      
+      acceptButton.addTarget(self, action: "performBoardAction:", forControlEvents: .TouchUpInside)
+      rejectButton.addTarget(self, action: "performBoardAction:", forControlEvents: .TouchUpInside)
+      closeButton.addTarget(self, action: "performBoardAction:", forControlEvents: .TouchUpInside)
+      
+      if details.tapAction != nil {
+        tapAction = UITapGestureRecognizer(target: self, action: "onboardTapped:")
+        addGestureRecognizer(tapAction!)
+      }
+      
+      setupFrames()
+    }
+  }
   var tapAction: UITapGestureRecognizer?
   
-  init(board: Board) {
+  init() {
     super.init(frame: CGRectZero)
-    self.board = board
-    
-    frame = CGRectMake(0, screenHeight, screenWidth, onboardViewHeight)
-    backgroundColor = board.color
-    
     transformViews.forEach { addSubview($0) }
-    
-    textLabel.text = board.text
-    textLabel.sizeToFit()
-    
-    boardImageView.image = board.image
-    
-    acceptButton.addTarget(self, action: "performBoardAction:", forControlEvents: .TouchUpInside)
-    rejectButton.addTarget(self, action: "performBoardAction:", forControlEvents: .TouchUpInside)
-    closeButton.addTarget(self, action: "performBoardAction:", forControlEvents: .TouchUpInside)
-    
-    if board.tapAction != nil {
-      tapAction = UITapGestureRecognizer(target: self, action: "onboardTapped:")
-      self.addGestureRecognizer(tapAction!)
-    }
-    
-    self.setupFrames()
   }
 
   func performBoardAction(sender: UIButton) {
     switch sender {
-    case acceptButton:  board.acceptAction?()
-    case rejectButton:  board.rejectAction?()
-    case closeButton:   Clearboard((delegate?.dismissFromViewController())!)
+    case acceptButton:  details.acceptAction?()
+    case rejectButton:  details.deniedAction?()
+    case closeButton:   TearOff(from: delegate.onViewController(), after: 0)
     default: return
     }
   }
   
   func onboardTapped(sender: UITapGestureRecognizer) {
-    board.tapAction?()
+    details.tapAction?()
   }
   
   public required init?(coder aDecoder: NSCoder) {
@@ -135,10 +146,11 @@ public class OnboardView: UIView {
 extension OnboardView {
   func setupFrames() {
     // TODO: Replace by autolayout.
+    frame = CGRectMake(0, screenHeight, screenWidth, onboardViewHeight)
     var labelOrigin = CGPointMake(onboardViewOffset, onboardViewOffset)
     var labelSize = CGSizeMake(screenWidth - (onboardViewOffset * 2), onboardViewHeight - (onboardViewOffset * 2))
     
-    if board.image != nil {
+    if details.iconName != nil {
       boardImageView.frame.origin = CGPointMake(onboardViewOffset, onboardViewOffset)
       boardImageView.frame.size = onboardImageViewSize
       
@@ -147,8 +159,8 @@ extension OnboardView {
       labelSize.width -= imageWidth
     }
     
-    if board.isHaveOption() {
-      if board.rejectAction != nil {
+    if isHaveOption() {
+      if details.deniedAction != nil {
         let xPos = screenWidth - onboardViewOffset - onboardButtonSize.width
         let yPos = onboardViewOffset
         rejectButton.frame.origin = CGPointMake(xPos, yPos)
@@ -157,7 +169,7 @@ extension OnboardView {
         labelSize.width -= onboardButtonSize.width + onboardViewOffset
       }
       
-      if board.acceptAction != nil {
+      if details.acceptAction != nil {
         let xPos = CGRectGetMinX(rejectButton.frame) - onboardButtonSize.width + 1
         let yPos = onboardViewOffset
         acceptButton.frame.origin = CGPointMake(xPos, yPos)
@@ -176,5 +188,9 @@ extension OnboardView {
     }
     textLabel.frame.origin = labelOrigin
     textLabel.frame.size = labelSize
+  }
+  
+  private func isHaveOption() -> Bool {
+    return details.acceptAction != nil && details.deniedAction != nil
   }
 }

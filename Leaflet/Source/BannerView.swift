@@ -15,6 +15,7 @@ protocol BannerViewDelegate {
 public protocol GenericBanner {
   var title: String! { get }
   var imageName: String? { get }
+  var presentation: LeafletPresentation! { get }
 }
 
 public protocol GenericInteract {

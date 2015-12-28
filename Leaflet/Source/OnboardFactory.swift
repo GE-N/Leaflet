@@ -10,9 +10,9 @@ import UIKit
 
 let onboardFactory: OnboardFactory = OnboardFactory()
 
-public func Onboard(board: Board, to: UIViewController) {
-  onboardFactory.craft(board, viewController: to)
-}
+//public func Onboard(board: Board, to: UIViewController) {
+//  onboardFactory.craft(board, viewController: to)
+//}
 
 public func Clearboard(viewController: UIViewController, after: NSTimeInterval = 0) {
   onboardFactory.demolish(viewController, after: after)
@@ -32,9 +32,9 @@ class OnboardFactory: NSObject {
   var delayTimer = NSTimer()
   
   func craft(board: Board, viewController: UIViewController) {
-    onboardView = OnboardView(board: board)
+    onboardView = OnboardView()
     onViewController = viewController
-    onboardView.delegate = self
+//    onboardView.delegate = self
     
     var delay: NSTimeInterval = 0
     if onboardIn(viewController) != nil {

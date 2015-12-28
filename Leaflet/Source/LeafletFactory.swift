@@ -15,7 +15,12 @@ protocol LeafletItem {
 public enum LeafletType {
   case Generic(GenericBanner, GenericStyle?, GenericInteract?)
   case PointUpdate(PointUpdateBanner, LeafletStyle?)
-  case Onboard
+  case Onboard(OnboardBanner)
+}
+
+public enum LeafletPresentation {
+  case Top
+  case Bottom
 }
 
 struct AnimationTiming {
@@ -39,6 +44,7 @@ public func TearOff(from viewController: UIViewController, after delay: NSTimeIn
 class LeafletFactory {
   var leaflet: LeafletItem!
   var presentOnVC: UIViewController!
+  var presentation: LeafletPresentation = .Top
   var timer = NSTimer()
   
   func stick(type: LeafletType, on vc: UIViewController) {
@@ -57,14 +63,21 @@ class LeafletFactory {
         genericBannerView.details = banner
         genericBannerView.style = style ?? InformStyle()
         genericBannerView.interact = interact
+        presentation = banner.presentation
       }
     case .PointUpdate(let banner, let style):
       leaflet = BannerPointView()
       if let pointBannerView = leaflet as? BannerPointView {
         pointBannerView.details = banner
         pointBannerView.style = style ?? DefaultStyle()
+        presentation = banner.presentation
       }
-    case .Onboard: break
+    case .Onboard(let banner):
+      leaflet = OnboardView()
+      if let onboardView = leaflet as? OnboardView {
+        onboardView.details = banner
+        presentation = banner.presentation
+      }
     }
     
     leaflet.delegate = self
@@ -86,13 +99,33 @@ class LeafletFactory {
   
   func presentView() {
     if let view = leaflet as? UIView {
-      let showOnView = leaflet.delegate.onViewController().view
-      view.frame.origin.y = -CGRectGetHeight(view.frame)
+      let vc = leaflet.delegate.onViewController()
+      let showOnView = vc.view
+      
+      var origin: CGPoint!
+      var destPoint: CGPoint!
+      
+      switch presentation {
+      case .Top:
+        origin = CGPointMake(0, -CGRectGetHeight(view.frame))
+        destPoint = CGPointMake(0, 64)
+      case .Bottom:
+        var yPos = screenHeight
+        if let tabbarController = vc.tabBarController {
+          yPos -= CGRectGetHeight(tabbarController.tabBar.frame)
+        }
+        origin = CGPointMake(0, yPos)
+        
+        destPoint = origin
+        destPoint.y -= CGRectGetHeight(view.frame)
+      }
+      
+      view.frame.origin = origin
       showOnView.addSubview(view)
       
-      UIView.animateWithDuration(AnimationTiming.movement, animations: { () -> Void in
-        view.frame.origin.y = 64 })
-        { (success) -> Void in
+      UIView.animateWithDuration(AnimationTiming.movement, animations: {
+        view.frame.origin = destPoint })
+        { success in
           if view.respondsToSelector("beginAnimation") && success == true {
             view.performSelector("beginAnimation")
         }
@@ -103,10 +136,19 @@ class LeafletFactory {
   func dismissView() {
     guard leafletOnViewController(leaflet.delegate.onViewController()) != nil else { return }
     
+    var destPoint: CGPoint!
+    
     if let view = leaflet as? UIView {
-      UIView.animateWithDuration(AnimationTiming.movement, animations: {
-        view.frame.origin.y = -CGRectGetHeight(view.frame)
-      }) { success in view.removeFromSuperview() }
+      switch presentation {
+      case .Top: destPoint = CGPointMake(0, -CGRectGetHeight(view.frame))
+      case .Bottom: destPoint = CGPointMake(0, screenHeight)
+      }
+      
+      if let view = leaflet as? UIView {
+        UIView.animateWithDuration(AnimationTiming.movement, animations: {
+          view.frame.origin = destPoint
+        }) { success in view.removeFromSuperview() }
+      }
     }
   }
   
