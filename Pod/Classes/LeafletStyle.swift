@@ -16,6 +16,10 @@ public protocol LeafletStyle {
 
 public protocol GenericStyle : LeafletStyle {
   var alignment: NSTextAlignment? { get }
+  var acceptIcon: UIImage? { get }
+  var acceptBackgroundColor: UIColor? { get }
+  var declineIcon: UIImage? { get }
+  var declineBackgroundColor: UIColor? { get }
 }
 
 
@@ -36,11 +40,19 @@ public struct InformStyle : GenericStyle {
   public var alignment: NSTextAlignment?
   public var font: UIFont?
   public var textColor: UIColor?
+  public var acceptIcon: UIImage?
+  public var acceptBackgroundColor: UIColor?
+  public var declineIcon: UIImage?
+  public var declineBackgroundColor: UIColor?
   
   public init() {
     backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
     font            = UIFont.systemFontOfSize(14)
     textColor       = UIColor.blackColor()
     alignment       = .Left
+    acceptIcon      = nil
+    declineIcon     = nil
+    acceptBackgroundColor   = nil
+    declineBackgroundColor  = nil
   }
 }

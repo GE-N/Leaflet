@@ -122,7 +122,43 @@ public class OnboardView: UIView, LeafletItem {
       backgroundColor = style?.backgroundColor
       textLabel.font = style?.font
       textLabel.textColor = style?.textColor
+      
+      // Style is conformed to Generic Banner
+      if let genericStyle = style as? GenericStyle {
+        if let acceptIcon = genericStyle.acceptIcon {
+          acceptButton.setTitle(nil, forState: .Normal)
+          acceptButton.setImage(acceptIcon, forState: .Normal)
+        }
+        
+        if let acceptBGColor = genericStyle.acceptBackgroundColor {
+          acceptButton.setBackgroundImage(bgColorImage(acceptBGColor), forState: .Normal)
+        }
+        
+        if let declineIcon = genericStyle.declineIcon {
+          rejectButton.setTitle(nil, forState: .Normal)
+          rejectButton.setImage(declineIcon, forState: .Normal)
+        }
+        
+        if let declineBGColor = genericStyle.declineBackgroundColor {
+          rejectButton.setBackgroundImage(bgColorImage(declineBGColor), forState: .Normal)
+        }
+      }
     }
+  }
+  
+  // Create 1px image from quartz, inspired from
+  // http://stackoverflow.com/questions/9151379/is-it-possible-to-use-quartz-2d-to-make-a-uiimage-on-another-thread
+  func bgColorImage(color: UIColor) -> UIImage {
+    let size = CGSize(width: 1, height: 1)
+    let opaque = false
+    let scale: CGFloat = 0
+    UIGraphicsBeginImageContextWithOptions(size, opaque, scale)
+    color.setFill()
+    UIRectFill(CGRect(origin: CGPoint.zero, size: size))
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return image
   }
   
   var tapAction: UITapGestureRecognizer?

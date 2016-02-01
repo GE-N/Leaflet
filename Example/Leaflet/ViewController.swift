@@ -156,6 +156,10 @@ extension ViewController {
     var style = InformStyle()
     style.font = UIFont(name: "American Typewriter", size: 16)
     style.textColor = UIColor.brownColor()
+    style.declineIcon = UIImage(named: "white-crs")
+    style.acceptIcon = UIImage(named: "white-chk")
+    style.acceptBackgroundColor = UIColor(red: 0.28, green: 0.59, blue: 0.11, alpha: 1)
+    style.declineBackgroundColor = UIColor(red: 0.85, green: 0.31, blue: 0.31, alpha: 1)
     
     Leaflet(.Onboard(board, style), on: self)
   }
