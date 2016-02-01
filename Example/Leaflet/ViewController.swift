@@ -150,12 +150,11 @@ extension ViewController {
       print("Denied")
       TearOff(from: self, after: 0)
     }
-  
-    print(UIFont.familyNames())
     
     var style = InformStyle()
     style.font = UIFont(name: "American Typewriter", size: 16)
     style.textColor = UIColor.brownColor()
+    style.border = 0
     style.declineIcon = UIImage(named: "white-crs")
     style.acceptIcon = UIImage(named: "white-chk")
     style.acceptBackgroundColor = UIColor(red: 0.28, green: 0.59, blue: 0.11, alpha: 1)

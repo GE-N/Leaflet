@@ -12,10 +12,10 @@ let screenBound = UIScreen.mainScreen().bounds
 let screenWidth = CGRectGetWidth(screenBound)
 let screenHeight = CGRectGetHeight(screenBound)
 
-let onboardViewOffset = CGFloat(8)
+let onboardViewOffset = CGFloat(0)
 let onboardViewHeight = CGFloat(70)
 let onboardImageViewSize = CGSizeMake(20, 20)
-let onboardButtonSize = CGSizeMake(44, 44)
+let onboardButtonSize = CGSizeMake(46, 70)
 let onboardCloseButtonSize = CGSizeMake(27, 27)
 let onboardCloseButtonFrame = CGRectMake(
   screenWidth - onboardCloseButtonSize.width - onboardViewOffset,
@@ -141,6 +141,11 @@ public class OnboardView: UIView, LeafletItem {
         
         if let declineBGColor = genericStyle.declineBackgroundColor {
           rejectButton.setBackgroundImage(bgColorImage(declineBGColor), forState: .Normal)
+        }
+        
+        if let borderWidth = genericStyle.border {
+          acceptButton.layer.borderWidth = borderWidth
+          rejectButton.layer.borderWidth = borderWidth
         }
       }
     }
