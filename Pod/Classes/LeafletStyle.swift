@@ -16,6 +16,9 @@ public protocol LeafletStyle {
 
 public protocol GenericStyle : LeafletStyle {
   var alignment: NSTextAlignment? { get }
+  
+  // Selective button styles
+  var border: CGFloat? { get }
   var acceptIcon: UIImage? { get }
   var acceptBackgroundColor: UIColor? { get }
   var declineIcon: UIImage? { get }
@@ -37,9 +40,11 @@ public struct DefaultStyle : LeafletStyle {
 
 public struct InformStyle : GenericStyle {
   public var backgroundColor: UIColor?
-  public var alignment: NSTextAlignment?
   public var font: UIFont?
   public var textColor: UIColor?
+  
+  public var border: CGFloat?
+  public var alignment: NSTextAlignment?
   public var acceptIcon: UIImage?
   public var acceptBackgroundColor: UIColor?
   public var declineIcon: UIImage?
@@ -49,6 +54,8 @@ public struct InformStyle : GenericStyle {
     backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
     font            = UIFont.systemFontOfSize(14)
     textColor       = UIColor.blackColor()
+    
+    border          = 1
     alignment       = .Left
     acceptIcon      = nil
     declineIcon     = nil

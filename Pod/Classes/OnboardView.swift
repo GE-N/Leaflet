@@ -15,7 +15,7 @@ let screenHeight = CGRectGetHeight(screenBound)
 let onboardViewOffset = CGFloat(8)
 let onboardViewHeight = CGFloat(70)
 let onboardImageViewSize = CGSizeMake(20, 20)
-let onboardButtonSize = CGSizeMake(44, 44)
+let onboardButtonSize = CGSizeMake(46, 70)
 let onboardCloseButtonSize = CGSizeMake(27, 27)
 let onboardCloseButtonFrame = CGRectMake(
   screenWidth - onboardCloseButtonSize.width - onboardViewOffset,
@@ -142,6 +142,11 @@ public class OnboardView: UIView, LeafletItem {
         if let declineBGColor = genericStyle.declineBackgroundColor {
           rejectButton.setBackgroundImage(bgColorImage(declineBGColor), forState: .Normal)
         }
+        
+        if let borderWidth = genericStyle.border {
+          acceptButton.layer.borderWidth = borderWidth
+          rejectButton.layer.borderWidth = borderWidth
+        }
       }
     }
   }
@@ -206,21 +211,21 @@ extension OnboardView {
     
     if isHaveOption() {
       if details.deniedAction != nil {
-        let xPos = screenWidth - onboardViewOffset - onboardButtonSize.width
-        let yPos = onboardViewOffset
+        let xPos = screenWidth - onboardButtonSize.width
+        let yPos = CGFloat(0)
         rejectButton.frame.origin = CGPointMake(xPos, yPos)
         rejectButton.frame.size = onboardButtonSize
         
-        labelSize.width -= onboardButtonSize.width + onboardViewOffset
+        labelSize.width -= onboardButtonSize.width
       }
       
       if details.acceptAction != nil {
         let xPos = CGRectGetMinX(rejectButton.frame) - onboardButtonSize.width + 1
-        let yPos = onboardViewOffset
+        let yPos = CGFloat(0)
         acceptButton.frame.origin = CGPointMake(xPos, yPos)
         acceptButton.frame.size = onboardButtonSize
         
-        labelSize.width -= onboardButtonSize.width + onboardViewOffset
+        labelSize.width -= onboardButtonSize.width
       }
     } else {
       closeButton.frame = onboardCloseButtonFrame
