@@ -10,6 +10,8 @@ import Foundation
 
 public protocol LeafletStyle {
   var backgroundColor: UIColor? { get }
+  var font: UIFont? { get }
+  var textColor: UIColor? { get }
 }
 
 public protocol GenericStyle : LeafletStyle {
@@ -19,18 +21,26 @@ public protocol GenericStyle : LeafletStyle {
 
 public struct DefaultStyle : LeafletStyle {
   public var backgroundColor: UIColor?
+  public var font: UIFont?
+  public var textColor: UIColor?
   
   public init() {
-    backgroundColor = UIColor(red:0.96, green:0.97, blue:0.97, alpha:1)
+    backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
+    font            = UIFont.systemFontOfSize(14)
+    textColor       = UIColor.blackColor()
   }
 }
 
 public struct InformStyle : GenericStyle {
   public var backgroundColor: UIColor?
   public var alignment: NSTextAlignment?
+  public var font: UIFont?
+  public var textColor: UIColor?
   
   public init() {
-    backgroundColor = UIColor(red:0.96, green:0.97, blue:0.97, alpha:1)
-    alignment = .Left
+    backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
+    font            = UIFont.systemFontOfSize(14)
+    textColor       = UIColor.blackColor()
+    alignment       = .Left
   }
 }

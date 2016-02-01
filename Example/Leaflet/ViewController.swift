@@ -114,7 +114,8 @@ extension ViewController {
   func genericBannerTapped(sender: UIButton) {
     let multilineText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ***** You can swipe up on this banner for dismiss *****"
     let banner = InformBanner(title: multilineText, imageName: nil)
-    let style = InformStyle()
+    var style = InformStyle()
+    style.font = UIFont.boldSystemFontOfSize(14)
     var interact = InformInteract()
     interact.canSwipeUpForDismiss = true
     interact.tapAction = { print("Tapped in banner!!") }
@@ -149,8 +150,14 @@ extension ViewController {
       print("Denied")
       TearOff(from: self, after: 0)
     }
+  
+    print(UIFont.familyNames())
     
-    Leaflet(.Onboard(board, nil), on: self)
+    var style = InformStyle()
+    style.font = UIFont(name: "American Typewriter", size: 16)
+    style.textColor = UIColor.brownColor()
+    
+    Leaflet(.Onboard(board, style), on: self)
   }
   
   func onboardNoActionDidPress(sender: UIButton) {

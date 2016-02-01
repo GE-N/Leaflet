@@ -115,8 +115,10 @@ extension BannerView {
 
 extension BannerView {
   func setupStyle() {
-    backgroundColor = style?.backgroundColor
+    backgroundColor         = style?.backgroundColor
     textLabel.textAlignment = style?.alignment ?? .Left
+    textLabel.font          = style?.font
+    textLabel.textColor     = style?.textColor
   }
 }
 

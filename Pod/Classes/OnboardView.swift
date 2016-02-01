@@ -120,6 +120,8 @@ public class OnboardView: UIView, LeafletItem {
   var style: LeafletStyle? {
     didSet {
       backgroundColor = style?.backgroundColor
+      textLabel.font = style?.font
+      textLabel.textColor = style?.textColor
     }
   }
   
