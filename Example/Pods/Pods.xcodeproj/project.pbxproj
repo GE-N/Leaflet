@@ -138,7 +138,6 @@
 			children = (
 				2A899540A5E907930F4F7CDAA307C8B4 /* BannerPointView.swift */,
 				28A6D3CFEA096CA4D83F9AD856B1AF0B /* BannerView.swift */,
-				E0454A88247DDF7999218B91C657B7FD /* GCD+extension.swift */,
 				7C2652251B82116B9A23DE646295DF84 /* LeafletFactory.swift */,
 				C7776D3590DB4E42B6204075BD6F0C1E /* LeafletStyle.swift */,
 				C72B496C5076619F9D453F4B841A71C0 /* LeafletType.swift */,
@@ -146,6 +145,7 @@
 				562042BF547252BEBD49ED34008A6A3A /* String+Extension.swift */,
 				80EC65EC10C4247D3E97223A2FCFCF27 /* UICountingLabel.h */,
 				E33E66C584564D529527F823982DC346 /* UICountingLabel.m */,
+				E0454A88247DDF7999218B91C657B7FD /* GCD+extension.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";

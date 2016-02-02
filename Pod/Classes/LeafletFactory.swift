@@ -20,6 +20,7 @@ public enum LeafletType {
 
 public enum LeafletPresentation {
   case Top
+  case TopWindow
   case Bottom
 }
 
@@ -46,6 +47,13 @@ class LeafletFactory : NSObject {
   var presentOnVC: UIViewController!
   var presentation: LeafletPresentation = .Top
   var timer = NSTimer()
+  lazy var modalWindow: UIWindow = {
+    let screenSize = UIScreen.mainScreen().bounds.size
+    var window = UIWindow(frame: CGRectMake(0, 0, screenSize.width, 64))
+    window.windowLevel = (UIWindowLevelStatusBar + 1)
+    window.hidden = false
+    return window
+  }()
   
   func stick(type: LeafletType, on vc: UIViewController) {
     var delay: NSTimeInterval = 0
@@ -98,7 +106,7 @@ class LeafletFactory : NSObject {
   func presentView() {
     if let view = leaflet as? UIView {
       let vc = leaflet.delegate.onViewController()
-      let showOnView = vc.view
+      var showOnView = vc.view
       
       var origin: CGPoint!
       var destPoint: CGPoint!
@@ -116,36 +124,73 @@ class LeafletFactory : NSObject {
         
         destPoint = origin
         destPoint.y -= CGRectGetHeight(view.frame)
+      case .TopWindow:
+        origin = CGPointMake(0, -CGRectGetHeight(view.frame))
+        destPoint = CGPointZero
+        showOnView = modalWindow
       }
       
-      view.frame.origin = origin
-      showOnView.addSubview(view)
-      
-      UIView.animateWithDuration(AnimationTiming.movement, animations: {
-        view.frame.origin = destPoint })
-        { success in
-          if view.respondsToSelector("beginAnimation") && success == true {
-            view.performSelector("beginAnimation")
-        }
+      beginPresentBanner(view, on: showOnView, move: (origin, destPoint))
+    }
+  }
+  
+  private func beginPresentBanner(banner: UIView,
+    on presentView: UIView,
+    move: (from: CGPoint, to: CGPoint)) {
+    
+      if presentView is UIWindow {
+        modalWindow.hidden = false
+        modalWindow.addSubview(banner)
+        modalWindow.frame.size.height = CGRectGetHeight(banner.bounds)
+      } else {
+        presentView.addSubview(banner)
       }
+      
+      banner.frame.origin = move.from
+      func animatePresentBanner() {
+        banner.frame.origin = move.to
+      }
+      
+      UIView.animateWithDuration(
+        AnimationTiming.movement,
+        animations: animatePresentBanner,
+        completion: animateBannerAfterPresent)
+  }
+  
+  private func animateBannerAfterPresent(animationSuccess: Bool) {
+    guard let banner = leaflet as? UIView else { return }
+    if banner.respondsToSelector("beginAnimation") && animationSuccess == true {
+      banner.performSelector("beginAnimation")
     }
   }
   
   func dismissView() {
-    guard leafletOnViewController(leaflet.delegate.onViewController()) != nil else { return }
-    
-    var destPoint: CGPoint!
-    
     if let view = leaflet as? UIView {
       switch presentation {
-      case .Top: destPoint = CGPointMake(0, -CGRectGetHeight(view.frame))
-      case .Bottom: destPoint = CGPointMake(0, screenHeight)
+      case .Top:       beginDismissAnimationOnView(CGPointMake(0, -CGRectGetHeight(view.frame)))
+      case .Bottom:    beginDismissAnimationOnView(CGPointMake(0, screenHeight))
+      case .TopWindow: beginDismissAnimationOnWindow()
       }
-      
-      if let view = leaflet as? UIView {
-        UIView.animateWithDuration(AnimationTiming.movement, animations: {
-          view.frame.origin = destPoint
-        }) { success in view.removeFromSuperview() }
+    }
+  }
+  
+  private func beginDismissAnimationOnView(destPoint: CGPoint) {
+    guard leafletOnViewController(leaflet.delegate.onViewController()) != nil else { return }
+    if let view = leaflet as? UIView {
+      UIView.animateWithDuration(AnimationTiming.movement, animations: {
+        view.frame.origin = destPoint
+      }) { success in view.removeFromSuperview() }
+    }
+  }
+  
+  private func beginDismissAnimationOnWindow() {
+    if let view = leaflet as? UIView {
+      let destPoint = CGPointMake(0, -CGRectGetHeight(view.frame))
+      UIView.animateWithDuration(AnimationTiming.movement, animations: {
+        view.frame.origin = destPoint
+      }) { success in
+        view.removeFromSuperview()
+        self.modalWindow.hidden = true
       }
     }
   }

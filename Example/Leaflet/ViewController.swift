@@ -69,6 +69,8 @@ class ViewController : UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Action", style: .Plain, target: self, action: "rightBarButton")
+    
     title = "Leaflet events"
     view.backgroundColor = UIColor.whiteColor()
     
@@ -89,6 +91,10 @@ class ViewController : UIViewController {
     
     
     setLayout()
+  }
+  
+  func rightBarButton() {
+    print("Tapped on right button")
   }
   
   let offset: CGFloat = 15
@@ -133,7 +139,8 @@ extension ViewController {
   }
   
   func tokenUpdateTapped(sender: UIButton) {
-    let banner = PointBanner(augend: 12000, adder: -1000, title: "Loose a game", iconName: "token")
+    var banner = PointBanner(augend: 12000, adder: -1000, title: "Loose a game", iconName: "token")
+    banner.presentation = .TopWindow
     
     Leaflet(.PointUpdate(banner, nil), on: self)
     TearOff(from: self, after: 3)
