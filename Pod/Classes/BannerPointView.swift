@@ -52,7 +52,7 @@ public class BannerPointView : UIView, LeafletItem {
   
   let bannerFont = UIFont.systemFontOfSize(13)
   
-  
+
   lazy private(set) var transformViews: [UIView] = [self.textLabel, self.detailsLabel]
   
   var points: Int16!
@@ -88,7 +88,7 @@ public class BannerPointView : UIView, LeafletItem {
   }
   
   private func initiateLabel(label: UILabel) {
-    label.font = bannerFont
+    label.font = style?.font ?? bannerFont
     label.sizeToFit()
   }
   
@@ -129,6 +129,10 @@ extension BannerPointView {
   }
   
   private func setupStyle() {
-    backgroundColor = style?.backgroundColor
+    backgroundColor     = style?.backgroundColor
+    textLabel.font      = style?.font
+    textLabel.textColor = style?.textColor
+    detailsLabel.font   = style?.font
+    detailsLabel.textColor = style?.textColor
   }
 }

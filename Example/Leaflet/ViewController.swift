@@ -142,7 +142,12 @@ extension ViewController {
     var banner = PointBanner(augend: 12000, adder: -1000, title: "Loose a game", iconName: "token")
     banner.presentation = .TopWindow
     
-    Leaflet(.PointUpdate(banner, nil), on: self)
+    var style = DefaultStyle()
+    style.backgroundColor = UIColor(red: 0.85, green: 0.31, blue: 0.31, alpha: 0.85)
+    style.textColor       = UIColor.whiteColor()
+    style.font            = UIFont.boldSystemFontOfSize(16)  // UIFont(name: "American Typewriter", size: 16)
+    
+    Leaflet(.PointUpdate(banner, style), on: self)
     TearOff(from: self, after: 3)
   }
   
