@@ -12,12 +12,10 @@ public protocol LeafletStyle {
   var backgroundColor: UIColor? { get }
   var font: UIFont? { get }
   var textColor: UIColor? { get }
+  var alignment: NSTextAlignment? { get }
 }
 
 public protocol GenericStyle : LeafletStyle {
-  var alignment: NSTextAlignment? { get }
-  
-  // Selective button styles
   var border: CGFloat? { get }
   var acceptIcon: UIImage? { get }
   var acceptBackgroundColor: UIColor? { get }
@@ -30,11 +28,13 @@ public struct DefaultStyle : LeafletStyle {
   public var backgroundColor: UIColor?
   public var font: UIFont?
   public var textColor: UIColor?
+  public var alignment: NSTextAlignment?
   
   public init() {
     backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
     font            = UIFont.systemFontOfSize(14)
     textColor       = UIColor.blackColor()
+    alignment       = .Left
   }
 }
 

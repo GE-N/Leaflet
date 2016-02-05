@@ -13,7 +13,7 @@ protocol LeafletItem {
 }
 
 public enum LeafletType {
-  case Generic(GenericBanner, GenericStyle?, GenericInteract?)
+  case Generic(GenericBanner, LeafletStyle?, GenericInteract?)
   case PointUpdate(PointUpdateBanner, LeafletStyle?)
   case Onboard(OnboardBanner, LeafletStyle?)
 }
@@ -69,7 +69,7 @@ class LeafletFactory : NSObject {
       leaflet = BannerView()      
       if let genericBannerView = leaflet as? BannerView {
         genericBannerView.details = banner
-        genericBannerView.style = style ?? InformStyle()
+        genericBannerView.style = style ?? DefaultStyle()
         genericBannerView.interact = interact
         presentation = banner.presentation
       }

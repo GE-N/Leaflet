@@ -57,7 +57,7 @@ public class BannerView : UIView, LeafletItem {
     }
   }
   
-  var style: GenericStyle? {
+  var style: LeafletStyle? {
     didSet { self.setupStyle() }
   }
   
