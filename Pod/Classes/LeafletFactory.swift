@@ -34,8 +34,8 @@ struct AnimationTiming {
 
 let leafletFactory: LeafletFactory =  LeafletFactory()
 
-public func Leaflet(type: LeafletType, on viewController: UIViewController) {
-  leafletFactory.stick(type, on: viewController)
+public func Leaflet(type: LeafletType, on viewController: UIViewController, after view: UIView? = nil) {
+  leafletFactory.stick(type, on: viewController, after: view)
 }
 
 public func TearOff(from viewController: UIViewController, after delay: NSTimeInterval? = 0) {
@@ -45,6 +45,7 @@ public func TearOff(from viewController: UIViewController, after delay: NSTimeIn
 class LeafletFactory : NSObject {
   var leaflet: LeafletItem!
   var presentOnVC: UIViewController!
+  var frontBannerView: UIView? = nil
   var presentation: LeafletPresentation = .Top
   var timer = NSTimer()
   lazy var modalWindow: UIWindow = {
@@ -55,7 +56,7 @@ class LeafletFactory : NSObject {
     return window
   }()
   
-  func stick(type: LeafletType, on vc: UIViewController) {
+  func stick(type: LeafletType, on vc: UIViewController, after view: UIView? = nil) {
     var delay: NSTimeInterval = 0
     if leafletOnViewController(vc) != nil {
       delay = AnimationTiming.movement
@@ -63,6 +64,7 @@ class LeafletFactory : NSObject {
     }
     
     presentOnVC = vc
+    frontBannerView = view
     
     switch type {
     case .Generic(let banner, let style, let interact):
@@ -143,7 +145,11 @@ class LeafletFactory : NSObject {
         modalWindow.addSubview(banner)
         modalWindow.frame.size.height = CGRectGetHeight(banner.bounds)
       } else {
-        presentView.addSubview(banner)
+        if frontBannerView != nil {
+          presentView.insertSubview(banner, belowSubview: frontBannerView!)
+        } else {
+          presentView.addSubview(banner)
+        }
       }
       
       banner.frame.origin = move.from
