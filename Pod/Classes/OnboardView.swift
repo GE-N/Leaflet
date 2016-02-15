@@ -16,12 +16,10 @@ let onboardViewOffset = CGFloat(8)
 let onboardViewHeight = CGFloat(70)
 let onboardImageViewSize = CGSizeMake(20, 20)
 let onboardButtonSize = CGSizeMake(46, 70)
-let onboardCloseButtonSize = CGSizeMake(27, 27)
+let onboardCloseButtonSize = CGSizeMake(46, 70)
 let onboardCloseButtonFrame = CGRectMake(
-  screenWidth - onboardCloseButtonSize.width - onboardViewOffset,
-  onboardViewOffset,
-  onboardCloseButtonSize.width,
-  onboardCloseButtonSize.height)
+  screenWidth - onboardCloseButtonSize.width, 0,
+  onboardCloseButtonSize.width, onboardCloseButtonSize.height)
 
 public protocol OnboardViewDelegate {
   func dismissFromViewController() -> UIViewController
@@ -81,9 +79,6 @@ public class OnboardView: UIView, LeafletItem {
     button.setTitle("✕", forState: .Normal)
     button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
     button.backgroundColor = UIColor.blackColor()
-    button.layer.cornerRadius = onboardCloseButtonSize.width / 2
-    button.layer.borderWidth = 2
-    button.layer.borderColor = UIColor.whiteColor().CGColor
     
     return button
   }()
@@ -122,7 +117,7 @@ public class OnboardView: UIView, LeafletItem {
       backgroundColor = style?.backgroundColor
       textLabel.font = style?.font
       textLabel.textColor = style?.textColor
-      
+            
       // Style is conformed to Generic Banner
       if let genericStyle = style as? GenericStyle {
         if let acceptIcon = genericStyle.acceptIcon {
@@ -141,6 +136,7 @@ public class OnboardView: UIView, LeafletItem {
         
         if let declineBGColor = genericStyle.declineBackgroundColor {
           rejectButton.setBackgroundImage(bgColorImage(declineBGColor), forState: .Normal)
+          closeButton.setBackgroundImage(bgColorImage(declineBGColor), forState: .Normal)
         }
         
         if let borderWidth = genericStyle.border {
@@ -177,7 +173,9 @@ public class OnboardView: UIView, LeafletItem {
     switch sender {
     case acceptButton:  details.acceptAction?()
     case rejectButton:  details.deniedAction?()
-    case closeButton:   TearOff(from: delegate.onViewController(), after: 0)
+    case closeButton:
+      details.deniedAction?()
+      TearOff(from: delegate.onViewController(), after: 0)
     default: return
     }
   }

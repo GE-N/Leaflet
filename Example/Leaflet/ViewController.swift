@@ -181,6 +181,10 @@ extension ViewController {
     
     var board = Onboard(title: boardText, iconName: iconName)
     board.setTapAction { print("tapped on Onboard") }
+    board.setDeniedAction { print("close") }
     
-    Leaflet(.Onboard(board, nil), on: self)  }
+    var style = InformStyle()
+    style.declineBackgroundColor = UIColor(red: 0.85, green: 0.31, blue: 0.31, alpha: 1)
+    
+    Leaflet(.Onboard(board, style), on: self)  }
 }
