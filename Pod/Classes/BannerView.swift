@@ -40,9 +40,7 @@ public class BannerView : UIView, LeafletItem {
     return imageView
   }()
   
-  lazy var bannerFont: UIFont = {
-    return UIFont.systemFontOfSize(13.0)
-  }()
+  var bannerFont: UIFont = UIFont.systemFontOfSize(13)
   
   lazy private(set) var transformViews: [UIView] = [self.textLabel, self.imageView]
   var delegate: BannerViewDelegate! {
@@ -119,6 +117,7 @@ extension BannerView {
     textLabel.textAlignment = style?.alignment ?? .Left
     textLabel.font          = style?.font
     textLabel.textColor     = style?.textColor
+    bannerFont              = style?.font ?? UIFont.systemFontOfSize(13)
   }
 }
 
