@@ -9,8 +9,8 @@
 import UIKit
 
 public protocol PointUpdateBanner : GenericBanner {
-  var augend: Int16 { get }
-  var adder: Int16 { get }
+  var augend: Int { get }
+  var adder: Int { get }
 }
 
 public class BannerPointView : UIView, LeafletItem {
@@ -55,8 +55,8 @@ public class BannerPointView : UIView, LeafletItem {
 
   lazy private(set) var transformViews: [UIView] = [self.textLabel, self.detailsLabel]
   
-  var points: Int16!
-  var adder: Int16!
+  var points: Int!
+  var adder: Int!
   
   var delegate: BannerViewDelegate! {
     didSet { setupFrame() }
@@ -83,7 +83,7 @@ public class BannerPointView : UIView, LeafletItem {
     transformViews.forEach { addSubview($0) }
   }
 
-  private func adderWithSigned(adder: Int16) -> String {
+  private func adderWithSigned(adder: Int) -> String {
     return adder >= 0 ? "+\(adder)" : "\(adder)"
   }
   

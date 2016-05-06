@@ -35,11 +35,11 @@ public struct InformInteract : GenericInteract {
 public struct PointBanner : PointUpdateBanner {
   public let title: String!
   public let imageName: String?
-  public let augend: Int16
-  public let adder: Int16
+  public let augend: Int
+  public let adder: Int
   public var presentation: LeafletPresentation!
   
-  public init(augend: Int16, adder: Int16, title: String, iconName: String?) {
+  public init(augend: Int, adder: Int, title: String, iconName: String?) {
     self.title = title
     self.augend = augend
     self.adder = adder

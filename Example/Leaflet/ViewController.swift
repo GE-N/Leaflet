@@ -121,7 +121,8 @@ extension ViewController {
     let multilineText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ***** You can swipe up on this banner for dismiss *****"
     let banner = InformBanner(title: multilineText, imageName: nil)
     var style = InformStyle()
-    style.font = UIFont.boldSystemFontOfSize(14)
+    
+    style.font = UIFont.boldSystemFontOfSize(19)
     var interact = InformInteract()
     interact.canSwipeUpForDismiss = true
     interact.tapAction = { print("Tapped in banner!!") }
