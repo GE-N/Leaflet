@@ -17,7 +17,7 @@ public class BannerPointView : UIView, LeafletItem {
   struct Dimension {
     static let offset: CGFloat = 8
     static let width: CGFloat = screenWidth
-    static let imageSize = CGSizeMake(16, 16)
+    static let imageSize = CGSizeMake(32, 32)
   }
   
   let numberFormatter: NSNumberFormatter = {
@@ -29,6 +29,7 @@ public class BannerPointView : UIView, LeafletItem {
   
   public lazy var imageView: UIImageView = {
     let imageView = UIImageView()
+    imageView.contentMode = .ScaleAspectFit
     return imageView
   }()
   
@@ -116,7 +117,7 @@ extension BannerPointView {
     
     if details.imageName != nil {
       addSubview(imageView)
-      imageView.frame.origin = CGPointMake(Dimension.offset, Dimension.offset)
+      imageView.frame.origin = CGPointMake(Dimension.offset, 0)
       imageView.frame.size = Dimension.imageSize
       
       let widthForImageView = Dimension.imageSize.width + Dimension.offset
