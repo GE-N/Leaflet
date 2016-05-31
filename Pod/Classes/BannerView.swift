@@ -37,6 +37,7 @@ public class BannerView : UIView, LeafletItem {
   
   public lazy var imageView: UIImageView = {
     let imageView = UIImageView()
+    imageView.contentMode = .ScaleAspectFit
     return imageView
   }()
   
