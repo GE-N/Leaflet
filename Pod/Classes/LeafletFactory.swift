@@ -34,8 +34,13 @@ struct AnimationTiming {
 
 let leafletFactory: LeafletFactory =  LeafletFactory()
 
-public func Leaflet(type: LeafletType, on viewController: UIViewController, after view: UIView? = nil) {
-  leafletFactory.stick(type, on: viewController, after: view)
+public func Leaflet(
+  type: LeafletType,
+  on viewController: UIViewController,
+  after view: UIView? = nil,
+  direction: LeafletPresentation? = nil)
+{
+  leafletFactory.stick(type, on: viewController, after: view, direction: direction)
 }
 
 public func TearOff(from viewController: UIViewController, after delay: NSTimeInterval? = 0) {
@@ -56,7 +61,12 @@ class LeafletFactory : NSObject {
     return window
   }()
   
-  func stick(type: LeafletType, on vc: UIViewController, after view: UIView? = nil) {
+  func stick(
+    type: LeafletType,
+    on vc: UIViewController,
+    after view: UIView? = nil,
+    direction: LeafletPresentation? = nil)
+  {
     var delay: NSTimeInterval = 0
     if leafletOnViewController(vc) != nil {
       delay = AnimationTiming.movement
@@ -73,21 +83,21 @@ class LeafletFactory : NSObject {
         genericBannerView.details = banner
         genericBannerView.style = style ?? DefaultStyle()
         genericBannerView.interact = interact
-        presentation = banner.presentation
+        presentation = direction ?? banner.presentation
       }
     case .PointUpdate(let banner, let style):
       leaflet = BannerPointView()
       if let pointBannerView = leaflet as? BannerPointView {
         pointBannerView.details = banner
         pointBannerView.style = style ?? DefaultStyle()
-        presentation = banner.presentation
+        presentation = direction ?? banner.presentation
       }
     case .Onboard(let banner, let style):
       leaflet = OnboardView()
       if let onboardView = leaflet as? OnboardView {
         onboardView.details = banner
         onboardView.style = style ?? DefaultStyle()
-        presentation = banner.presentation
+        presentation = direction ?? banner.presentation
       }
     }
     

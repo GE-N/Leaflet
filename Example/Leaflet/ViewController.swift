@@ -148,7 +148,13 @@ extension ViewController {
     style.textColor       = UIColor.whiteColor()
     style.font            = UIFont.boldSystemFontOfSize(16)  // UIFont(name: "American Typewriter", size: 16)
     
-    Leaflet(.PointUpdate(banner, style), on: self)
+    // Present banner in top window by default action.
+    //
+    // Leaflet(.PointUpdate(banner, style), on: self)
+    
+    // Present banner by custom direction.
+    Leaflet(.PointUpdate(banner, style), on: self, direction: .Top)
+    
     TearOff(from: self, after: 3)
   }
   
