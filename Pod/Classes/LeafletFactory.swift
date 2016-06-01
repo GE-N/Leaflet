@@ -32,13 +32,39 @@ struct AnimationTiming {
   static let totalDelay: NSTimeInterval = popUp + movement * 2
 }
 
+/**
+ Dimension struct for manipulate banner's icon.
+ */
+
+public struct Dimension {
+  var offset: CGFloat
+  var width: CGFloat
+  var imageSize: CGSize
+  
+  init(space offset: CGFloat, width: CGFloat, image size: CGSize) {
+    self.offset = offset
+    self.width = width
+    imageSize = size
+  }
+}
+
 let leafletFactory: LeafletFactory =  LeafletFactory()
 
+/**
+ Present a banner each type.
+ 
+ - parameter type: Banner type want to present. Can be 3 types 'Generic/Point/Onboard'.
+ - parameter on: ViewController which need to present a banner.
+ - parameter after: View need to set banner set after. (ex if not default Navigation bar)
+ - parameter direction: Customed direction need to present banner. Can be 3 types 'TopWindow, Top, Bottom'.
+ - parameter iconDimension: Banner image appearance.
+*/
 public func Leaflet(
   type: LeafletType,
   on viewController: UIViewController,
   after view: UIView? = nil,
-  direction: LeafletPresentation? = nil)
+  direction: LeafletPresentation? = nil,
+  iconDimension: Dimension? = nil)
 {
   leafletFactory.stick(type, on: viewController, after: view, direction: direction)
 }
@@ -65,7 +91,8 @@ class LeafletFactory : NSObject {
     type: LeafletType,
     on vc: UIViewController,
     after view: UIView? = nil,
-    direction: LeafletPresentation? = nil)
+    direction: LeafletPresentation? = nil,
+    iconDimension: Dimension? = nil)
   {
     var delay: NSTimeInterval = 0
     if leafletOnViewController(vc) != nil {
@@ -83,6 +110,11 @@ class LeafletFactory : NSObject {
         genericBannerView.details = banner
         genericBannerView.style = style ?? DefaultStyle()
         genericBannerView.interact = interact
+        
+        if iconDimension != nil {
+          genericBannerView.dimension = iconDimension!
+        }
+        
         presentation = direction ?? banner.presentation
       }
     case .PointUpdate(let banner, let style):
@@ -90,6 +122,11 @@ class LeafletFactory : NSObject {
       if let pointBannerView = leaflet as? BannerPointView {
         pointBannerView.details = banner
         pointBannerView.style = style ?? DefaultStyle()
+        
+        if iconDimension != nil {
+          pointBannerView.dimension = iconDimension!
+        }
+        
         presentation = direction ?? banner.presentation
       }
     case .Onboard(let banner, let style):
@@ -97,6 +134,11 @@ class LeafletFactory : NSObject {
       if let onboardView = leaflet as? OnboardView {
         onboardView.details = banner
         onboardView.style = style ?? DefaultStyle()
+        
+        if iconDimension != nil {
+          onboardView.dimension = iconDimension!
+        }
+        
         presentation = direction ?? banner.presentation
       }
     }

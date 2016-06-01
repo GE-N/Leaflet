@@ -24,10 +24,7 @@ public protocol GenericInteract {
 }
 
 public class BannerView : UIView, LeafletItem {
-  struct Dimension {
-    static let offset: CGFloat = 8
-    static let imageSize = CGSizeMake(12, 12)
-  }
+  var dimension = Dimension(space: 8, width: screenWidth, image: CGSizeMake(12, 12))
   
   public lazy var textLabel: UILabel = {
     let label = UILabel()
@@ -77,16 +74,16 @@ public class BannerView : UIView, LeafletItem {
 
 extension BannerView {
   func setupFrame() {
-    var labelFrame = CGRectMake(Dimension.offset, Dimension.offset,
-      CGRectGetWidth(delegate.onViewController().view.frame) - (Dimension.offset * 2), 0)
+    var labelFrame = CGRectMake(dimension.offset, dimension.offset,
+      CGRectGetWidth(delegate.onViewController().view.frame) - (dimension.offset * 2), 0)
     
     if details.imageName != nil {
-      imageView.frame = CGRectMake(Dimension.offset, Dimension.offset, 0, 0)
-      imageView.frame.size = Dimension.imageSize
+      imageView.frame = CGRectMake(dimension.offset, dimension.offset, 0, 0)
+      imageView.frame.size = dimension.imageSize
       imageView.image = UIImage(named: details.imageName!)
       
-      labelFrame.origin.x = CGRectGetMaxX(imageView.frame) + Dimension.offset
-      labelFrame.size.width -= CGRectGetWidth(imageView.frame) + Dimension.offset
+      labelFrame.origin.x = CGRectGetMaxX(imageView.frame) + dimension.offset
+      labelFrame.size.width -= CGRectGetWidth(imageView.frame) + dimension.offset
     }
     
     let textHeight = textLabelHeight(labelFrame.size.width)
@@ -94,15 +91,15 @@ extension BannerView {
     textLabel.frame = labelFrame
     
     frame = delegate.onViewController().view.frame
-    frame.size.height = textHeight + (Dimension.offset * 2)
+    frame.size.height = textHeight + (dimension.offset * 2)
     
     if textLabel.textAlignment == .Center {
       textLabel.sizeToFit()
       textLabel.center = center
       
       if details.imageName != nil {
-        textLabel.center.x += Dimension.imageSize.width + Dimension.offset
-        imageView.frame.origin.x = CGRectGetMinX(textLabel.frame) - Dimension.imageSize.width - Dimension.offset
+        textLabel.center.x += dimension.imageSize.width + dimension.offset
+        imageView.frame.origin.x = CGRectGetMinX(textLabel.frame) - dimension.imageSize.width - dimension.offset
       }
     }
   }

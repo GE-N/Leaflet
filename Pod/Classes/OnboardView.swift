@@ -12,9 +12,7 @@ let screenBound = UIScreen.mainScreen().bounds
 let screenWidth = CGRectGetWidth(screenBound)
 let screenHeight = CGRectGetHeight(screenBound)
 
-let onboardViewOffset = CGFloat(8)
 let onboardViewHeight = CGFloat(70)
-let onboardImageViewSize = CGSizeMake(20, 20)
 let onboardButtonSize = CGSizeMake(46, 70)
 let onboardCloseButtonSize = CGSizeMake(46, 70)
 let onboardCloseButtonFrame = CGRectMake(
@@ -35,6 +33,8 @@ public protocol OnboardBanner {
 }
 
 public class OnboardView: UIView, LeafletItem {
+  var dimension = Dimension(space: CGFloat(8), width: screenWidth, image: CGSizeMake(20, 20))
+  
   public lazy var textLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .Left
@@ -195,14 +195,14 @@ extension OnboardView {
   func setupFrames() {
     // TODO: Replace by autolayout.
     frame = CGRectMake(0, screenHeight, screenWidth, onboardViewHeight)
-    var labelOrigin = CGPointMake(onboardViewOffset, onboardViewOffset)
-    var labelSize = CGSizeMake(screenWidth - (onboardViewOffset * 2), onboardViewHeight - (onboardViewOffset * 2))
+    var labelOrigin = CGPointMake(dimension.offset, dimension.offset)
+    var labelSize = CGSizeMake(screenWidth - (dimension.offset * 2), onboardViewHeight - (dimension.offset * 2))
     
     if details.iconName != nil {
-      boardImageView.frame.origin = CGPointMake(onboardViewOffset, onboardViewOffset)
-      boardImageView.frame.size = onboardImageViewSize
+      boardImageView.frame.origin = CGPointMake(dimension.offset, dimension.offset)
+      boardImageView.frame.size = dimension.imageSize
       
-      let imageWidth = onboardImageViewSize.width + onboardViewOffset
+      let imageWidth = dimension.imageSize.width + dimension.offset
       labelOrigin.x += imageWidth
       labelSize.width -= imageWidth
     }
@@ -228,7 +228,7 @@ extension OnboardView {
     } else {
       closeButton.frame = onboardCloseButtonFrame
       
-      labelSize.width -= onboardCloseButtonSize.width + onboardViewOffset
+      labelSize.width -= onboardCloseButtonSize.width + dimension.offset
     }
     
     if let labelHeight = textLabel.text?.heighWithConstrainedWidth(labelSize.width, font: textLabel.font) where labelHeight < onboardViewHeight {

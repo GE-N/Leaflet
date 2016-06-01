@@ -14,11 +14,7 @@ public protocol PointUpdateBanner : GenericBanner {
 }
 
 public class BannerPointView : UIView, LeafletItem {
-  struct Dimension {
-    static let offset: CGFloat = 8
-    static let width: CGFloat = screenWidth
-    static let imageSize = CGSizeMake(32, 32)
-  }
+  var dimension = Dimension(space: 8, width: screenWidth, image: CGSizeMake(32, 32))
   
   let numberFormatter: NSNumberFormatter = {
     let formatter = NSNumberFormatter()
@@ -109,24 +105,24 @@ public class BannerPointView : UIView, LeafletItem {
 extension BannerPointView {
   private func setupFrame() {
     transformViews.forEach { initiateLabel($0 as! UILabel) }
-    textLabel.frame.origin = CGPointMake(Dimension.offset, Dimension.offset)
-    detailsLabel.frame.origin.x = screenWidth - Dimension.offset - CGRectGetWidth(detailsLabel.frame)
-    detailsLabel.frame.origin.y = Dimension.offset
+    textLabel.frame.origin = CGPointMake(dimension.offset, dimension.offset)
+    detailsLabel.frame.origin.x = screenWidth - dimension.offset - CGRectGetWidth(detailsLabel.frame)
+    detailsLabel.frame.origin.y = dimension.offset
     
-    textLabel.frame.size.width = screenWidth - CGRectGetMinX(detailsLabel.frame) - (Dimension.offset * 2)
+    textLabel.frame.size.width = screenWidth - CGRectGetMinX(detailsLabel.frame) - (dimension.offset * 2)
     
     if details.imageName != nil {
       addSubview(imageView)
-      imageView.frame.origin = CGPointMake(Dimension.offset, 0)
-      imageView.frame.size = Dimension.imageSize
+      imageView.frame.origin = CGPointMake(dimension.offset, 0)
+      imageView.frame.size = dimension.imageSize
       
-      let widthForImageView = Dimension.imageSize.width + Dimension.offset
+      let widthForImageView = dimension.imageSize.width + dimension.offset
       textLabel.frame.origin.x += widthForImageView
       textLabel.frame.size.width -= widthForImageView
     }
     
     frame = delegate.onViewController().view.frame
-    frame.size.height = CGRectGetHeight(textLabel.frame) + (Dimension.offset * 2)
+    frame.size.height = CGRectGetHeight(textLabel.frame) + (dimension.offset * 2)
   }
   
   private func setupStyle() {
