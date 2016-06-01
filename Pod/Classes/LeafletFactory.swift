@@ -41,7 +41,7 @@ public struct Dimension {
   var width: CGFloat
   var imageSize: CGSize
   
-  init(space offset: CGFloat, width: CGFloat, image size: CGSize) {
+  public init(space offset: CGFloat, width: CGFloat, image size: CGSize) {
     self.offset = offset
     self.width = width
     imageSize = size
