@@ -41,7 +41,7 @@ public struct Dimension {
   var width: CGFloat
   var imageSize: CGSize
   
-  init(space offset: CGFloat, width: CGFloat, image size: CGSize) {
+  public init(space offset: CGFloat, width: CGFloat, image size: CGSize) {
     self.offset = offset
     self.width = width
     imageSize = size
@@ -66,7 +66,12 @@ public func Leaflet(
   direction: LeafletPresentation? = nil,
   iconDimension: Dimension? = nil)
 {
-  leafletFactory.stick(type, on: viewController, after: view, direction: direction)
+  leafletFactory.stick(
+    type,
+    on: viewController,
+    after: view,
+    direction: direction,
+    iconDimension: iconDimension)
 }
 
 public func TearOff(from viewController: UIViewController, after delay: NSTimeInterval? = 0) {
