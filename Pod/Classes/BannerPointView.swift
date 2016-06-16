@@ -90,8 +90,11 @@ public class BannerPointView : UIView, LeafletItem {
   }
   
   func beginAnimation() {
-    gcdDelay(0.5){ [unowned self] in
-      self.textLabel.countFrom(CGFloat(self.points), to: CGFloat(self.points + self.adder), withDuration: 1)
+    gcdDelay(0.5){ [weak self] in
+      if let point = self?.points,
+        let adder = self?.adder {
+        self?.textLabel.countFrom(CGFloat(point), to: CGFloat(point + adder), withDuration: 1)
+      }
     }
   }
   
