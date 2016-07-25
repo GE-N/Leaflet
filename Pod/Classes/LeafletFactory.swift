@@ -78,9 +78,9 @@ public func TearOff(from viewController: UIViewController, after delay: NSTimeIn
   leafletFactory.tearOff(from: viewController, after: delay!)
 }
 
-class LeafletFactory : NSObject {
+public class LeafletFactory : NSObject {
   var leaflet: LeafletItem!
-  var presentOnVC: UIViewController!
+  public var presentOnVC: UIViewController!
   var frontBannerView: UIView? = nil
   var presentation: LeafletPresentation = .Top
   var timer = NSTimer()
@@ -92,7 +92,7 @@ class LeafletFactory : NSObject {
     return window
   }()
   
-  func stick(
+  public func stick(
     type: LeafletType,
     on vc: UIViewController,
     after view: UIView? = nil,
@@ -153,9 +153,9 @@ class LeafletFactory : NSObject {
     gcdDelay(delay){ self.presentView() }
   }
   
-  func tearOff(from viewController: UIViewController, after delay: NSTimeInterval = 0) {
+  public func tearOff(from viewController: UIViewController, after delay: NSTimeInterval = 0) {
     timer.invalidate()
-    timer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: "delayFired:", userInfo: nil, repeats: false)
+    timer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: #selector(LeafletFactory.delayFired(_:)), userInfo: nil, repeats: false)
   }
   
   func delayFired(timer: NSTimer) {
@@ -222,9 +222,13 @@ class LeafletFactory : NSObject {
   
   private func animateBannerAfterPresent(animationSuccess: Bool) {
     guard let banner = leaflet as? UIView else { return }
-    if banner.respondsToSelector("beginAnimation") && animationSuccess == true {
-      banner.performSelector("beginAnimation")
+    
+    if banner.respondsToSelector(#selector(UIView.beginAnimations(_:context:))) && animationSuccess {
+        banner.performSelector(#selector(UIView.beginAnimations(_:context:)))
     }
+//    if banner.respondsToSelector("beginAnimation") && animationSuccess == true {
+//      banner.performSelector("beginAnimation")
+//    }
   }
   
   func dismissView() {
