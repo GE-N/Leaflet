@@ -112,9 +112,14 @@ extension BannerPointView {
     
     frame = delegate.onViewController().view.frame
     frame.size.height = CGRectGetHeight(textLabel.frame) + (dimension.offset * 2)
+    
+    var horizontalVisualFormat: String!
     if details.imageName != nil {
-      addSubview(imageView)
       imageView.frame.size = dimension.imageSize
+      addSubview(imageView)
+      horizontalVisualFormat = "H:|-offset-[icon]-offset-[details]-offset-|"
+    } else {
+      horizontalVisualFormat = "H:|-offset-[details]-offset-|"
     }
     
     stackView = TZStackView(arrangedSubviews: [textLabel, detailsLabel])
@@ -135,7 +140,7 @@ extension BannerPointView {
     ]
     
     addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-      "H:|-offset-[icon]-offset-[details]-offset-|",
+      horizontalVisualFormat,
       options: NSLayoutFormatOptions(rawValue: 0),
       metrics: metric, views: views))
     

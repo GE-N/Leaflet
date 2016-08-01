@@ -140,7 +140,9 @@ extension ViewController {
   }
   
   func tokenUpdateTapped(sender: UIButton) {
-    var banner = PointBanner(augend: 12000, adder: -1000, title: "Loose a game, Loose a game, Loose a game, Loose a game", iconName: "token")
+    var banner = PointBanner(augend: 12000, adder: -1000, title: "Loose a game, Loose a game, Loose a game, Loose a game",
+//                             iconName: nil)
+                             iconName: "token")
     banner.presentation = .TopWindow
     
     var style = DefaultStyle()
