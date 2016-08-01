@@ -1,12 +1,10 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
-target 'Leaflet_Example', :exclusive => true do
+target 'Leaflet_Example' do
   pod "Leaflet", :path => "../"
 end
 
-target 'Leaflet_Tests', :exclusive => true do
+target 'Leaflet_Tests' do
   pod "Leaflet", :path => "../"
-
-  
 end

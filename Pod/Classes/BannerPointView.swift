@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TZStackView
 
 public protocol PointUpdateBanner : GenericBanner {
   var augend: Int { get }
@@ -14,6 +15,7 @@ public protocol PointUpdateBanner : GenericBanner {
 }
 
 public class BannerPointView : UIView, LeafletItem {
+  var stackView: TZStackView!
   var dimension = Dimension(space: 8, width: screenWidth, image: CGSizeMake(32, 32))
   
   let numberFormatter: NSNumberFormatter = {
@@ -77,7 +79,7 @@ public class BannerPointView : UIView, LeafletItem {
   
   init() {
     super.init(frame: CGRectZero)
-    transformViews.forEach { addSubview($0) }
+//    transformViews.forEach { addSubview($0) }
   }
 
   private func adderWithSigned(adder: Int) -> String {
@@ -108,24 +110,51 @@ public class BannerPointView : UIView, LeafletItem {
 extension BannerPointView {
   private func setupFrame() {
     transformViews.forEach { initiateLabel($0 as! UILabel) }
-    textLabel.frame.origin = CGPointMake(dimension.offset, dimension.offset)
-    detailsLabel.frame.origin.x = screenWidth - dimension.offset - CGRectGetWidth(detailsLabel.frame)
-    detailsLabel.frame.origin.y = dimension.offset
-    
-    textLabel.frame.size.width = screenWidth - CGRectGetMinX(detailsLabel.frame) - (dimension.offset * 2)
-    
-    if details.imageName != nil {
-      addSubview(imageView)
-      imageView.frame.origin = CGPointMake(dimension.offset, 0)
-      imageView.frame.size = dimension.imageSize
-      
-      let widthForImageView = dimension.imageSize.width + dimension.offset
-      textLabel.frame.origin.x += widthForImageView
-      textLabel.frame.size.width -= widthForImageView
-    }
     
     frame = delegate.onViewController().view.frame
     frame.size.height = CGRectGetHeight(textLabel.frame) + (dimension.offset * 2)
+//    textLabel.frame.origin = CGPointMake(dimension.offset, dimension.offset)
+//    detailsLabel.frame.origin.x = screenWidth - dimension.offset - CGRectGetWidth(detailsLabel.frame)
+//    detailsLabel.frame.origin.y = dimension.offset
+//    
+//    textLabel.frame.size.width = screenWidth - CGRectGetMinX(detailsLabel.frame) - (dimension.offset * 2)
+//    
+    if details.imageName != nil {
+      addSubview(imageView)
+//      imageView.frame.origin = CGPointMake(dimension.offset, 0)
+      imageView.frame.size = dimension.imageSize
+
+//      let widthForImageView = dimension.imageSize.width + dimension.offset
+//      textLabel.frame.origin.x += widthForImageView
+//      textLabel.frame.size.width -= widthForImageView
+    }
+    
+    stackView = TZStackView(arrangedSubviews: [textLabel, detailsLabel])
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.axis = .Horizontal
+    stackView.distribution = .Fill
+    stackView.alignment = .Fill
+    stackView.spacing = dimension.offset
+    addSubview(stackView)
+   
+    let views: [String : AnyObject] = [
+      "icon" : imageView,
+      "details" : stackView
+    ]
+    
+    let metric: [String: AnyObject] = [
+      "offset" : dimension.offset
+    ]
+    
+    addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+      "H:|-offset-[icon]-offset-[details]-offset-|",
+      options: NSLayoutFormatOptions(rawValue: 0),
+      metrics: metric, views: views))
+    
+    addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+      "V:|[details]|",
+      options: NSLayoutFormatOptions(rawValue: 0),
+      metrics: metric, views: views))
   }
   
   private func setupStyle() {
