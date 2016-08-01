@@ -79,7 +79,6 @@ public class BannerPointView : UIView, LeafletItem {
   
   init() {
     super.init(frame: CGRectZero)
-//    transformViews.forEach { addSubview($0) }
   }
 
   private func adderWithSigned(adder: Int) -> String {
@@ -113,20 +112,9 @@ extension BannerPointView {
     
     frame = delegate.onViewController().view.frame
     frame.size.height = CGRectGetHeight(textLabel.frame) + (dimension.offset * 2)
-//    textLabel.frame.origin = CGPointMake(dimension.offset, dimension.offset)
-//    detailsLabel.frame.origin.x = screenWidth - dimension.offset - CGRectGetWidth(detailsLabel.frame)
-//    detailsLabel.frame.origin.y = dimension.offset
-//    
-//    textLabel.frame.size.width = screenWidth - CGRectGetMinX(detailsLabel.frame) - (dimension.offset * 2)
-//    
     if details.imageName != nil {
       addSubview(imageView)
-//      imageView.frame.origin = CGPointMake(dimension.offset, 0)
       imageView.frame.size = dimension.imageSize
-
-//      let widthForImageView = dimension.imageSize.width + dimension.offset
-//      textLabel.frame.origin.x += widthForImageView
-//      textLabel.frame.size.width -= widthForImageView
     }
     
     stackView = TZStackView(arrangedSubviews: [textLabel, detailsLabel])
