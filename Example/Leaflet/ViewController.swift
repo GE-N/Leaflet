@@ -155,7 +155,7 @@ extension ViewController {
     // Leaflet(.PointUpdate(banner, style), on: self)
     
     // Present banner by custom direction.
-    Leaflet(.PointUpdate(banner, style), on: self, direction: .Top)
+    Leaflet(.PointUpdate(banner, style), on: self, direction: .Top(y: nil))
     
     TearOff(from: self, after: 3)
   }

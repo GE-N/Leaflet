@@ -19,7 +19,7 @@ public enum LeafletType {
 }
 
 public enum LeafletPresentation {
-  case Top
+  case Top(y: CGFloat?)
   case TopWindow
   case Bottom
 }
@@ -82,7 +82,7 @@ public class LeafletFactory : NSObject {
   var leaflet: LeafletItem!
   public var presentOnVC: UIViewController!
   var frontBannerView: UIView? = nil
-  var presentation: LeafletPresentation = .Top
+  var presentation: LeafletPresentation = .Top(y: nil)
   var timer = NSTimer()
   lazy var modalWindow: UIWindow = {
     let screenSize = UIScreen.mainScreen().bounds.size

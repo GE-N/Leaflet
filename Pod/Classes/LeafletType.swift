@@ -16,7 +16,7 @@ public struct InformBanner : GenericBanner {
   public init(title: String, imageName: String?) {
     self.title = title
     self.imageName = imageName
-    presentation = .Top
+    presentation = .Top(y: nil)
   }
 }
 
@@ -44,7 +44,7 @@ public struct PointBanner : PointUpdateBanner {
     self.augend = augend
     self.adder = adder
     self.imageName = iconName
-    presentation = .Top
+    presentation = .Top(y: nil)
   }
 }
 
