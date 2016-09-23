@@ -123,13 +123,13 @@ extension BannerView {
 extension BannerView {
   func setupInteract() {
     if interact?.canSwipeUpForDismiss == true {
-      let swipeUp = UISwipeGestureRecognizer(target: self, action: "performSwipeUp:")
+      let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(BannerView.performSwipeUp(_:)))
       swipeUp.direction = .Up
       addGestureRecognizer(swipeUp)
     }
     
     if interact?.tapAction != nil {
-      let tap = UITapGestureRecognizer(target: self, action: "performTap:")
+      let tap = UITapGestureRecognizer(target: self, action: #selector(BannerView.performTap(_:)))
       addGestureRecognizer(tap)
     }
   }

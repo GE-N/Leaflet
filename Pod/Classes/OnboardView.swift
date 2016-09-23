@@ -99,12 +99,12 @@ public class OnboardView: UIView, LeafletItem {
         boardImageView.image = UIImage(named: details.iconName!)
       }
       
-      acceptButton.addTarget(self, action: "performBoardAction:", forControlEvents: .TouchUpInside)
-      rejectButton.addTarget(self, action: "performBoardAction:", forControlEvents: .TouchUpInside)
-      closeButton.addTarget(self, action: "performBoardAction:", forControlEvents: .TouchUpInside)
+      acceptButton.addTarget(self, action: #selector(OnboardView.performBoardAction(_:)), forControlEvents: .TouchUpInside)
+      rejectButton.addTarget(self, action: #selector(OnboardView.performBoardAction(_:)), forControlEvents: .TouchUpInside)
+      closeButton.addTarget(self, action: #selector(OnboardView.performBoardAction(_:)), forControlEvents: .TouchUpInside)
       
       if details.tapAction != nil {
-        tapAction = UITapGestureRecognizer(target: self, action: "onboardTapped:")
+        tapAction = UITapGestureRecognizer(target: self, action: #selector(OnboardView.onboardTapped(_:)))
         addGestureRecognizer(tapAction!)
       }
       
@@ -159,7 +159,7 @@ public class OnboardView: UIView, LeafletItem {
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     
-    return image
+    return image!
   }
   
   var tapAction: UITapGestureRecognizer?
