@@ -116,7 +116,8 @@ public class OnboardView: UIView, LeafletItem {
     didSet {
       backgroundColor = style?.backgroundColor
       textLabel.font = style?.font
-      textLabel.textColor = style?.textColor
+      // Disabled style on text for reason its overriden attributed string color.
+      // textLabel.textColor = style?.textColor
             
       // Style is conformed to Generic Banner
       if let genericStyle = style as? GenericStyle {
