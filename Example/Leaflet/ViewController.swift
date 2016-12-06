@@ -45,7 +45,8 @@ class ViewController : UIViewController {
   
   lazy var onboardButton: UIButton = { [unowned self] in
     let button = UIButton()
-    button.addTarget(self, action: "onboardButtonDidPress:", forControlEvents: .TouchUpInside)
+    let tapAction = #selector(ViewController.onboardButtonDidPress(_:))
+    button.addTarget(self, action: tapAction, forControlEvents: .TouchUpInside)
     button.setTitle("Onboard with options", forState: .Normal)
     button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
     button.layer.borderColor = UIColor.grayColor().CGColor
@@ -69,13 +70,16 @@ class ViewController : UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Action", style: .Plain, target: self, action: "rightBarButton")
+    let rightBarButtonAction = #selector(ViewController.rightBarButton)
+    navigationItem.rightBarButtonItem =
+      UIBarButtonItem(title: "Action", style: .Plain, target: self, action: rightBarButtonAction)
     
     title = "Leaflet events"
     view.backgroundColor = UIColor.whiteColor()
     
+    let genericBannerTapped = #selector(ViewController.genericBannerTapped(_:))
     view.addSubview(genericBannerButton)
-    genericBannerButton.addTarget(self, action: "genericBannerTapped:", forControlEvents: .TouchUpInside)
+    genericBannerButton.addTarget(self, action: genericBannerTapped, forControlEvents: .TouchUpInside)
     
     view.addSubview(genericCenter)
     genericCenter.addTarget(self, action: "genericCenterTapped:", forControlEvents: .TouchUpInside)
@@ -161,10 +165,19 @@ extension ViewController {
   }
   
   func onboardButtonDidPress(button: UIButton) {
-    let boardText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    let boardText = "Be notified when the next match is about to start. Settings"
+    
+    var text = NSMutableAttributedString(string: boardText)
+    text.addAttributes(
+      [NSForegroundColorAttributeName : UIColor.orangeColor(),
+      NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue],
+      range: (boardText as NSString).rangeOfString("Settings"))
+    
+//    let boardText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     let iconName = "check"
     
-    var board = Onboard(title: boardText, iconName: iconName)
+    var board = Onboard(attrTitle: text, iconName: iconName)
+//    var board = Onboard(title: boardText, iconName: iconName)
     board.setTapAction { print("tapped on Onboard") }
     board.setAcceptAction { print("Accepted") }
     board.setDeniedAction { [unowned self] in
@@ -174,7 +187,7 @@ extension ViewController {
     
     var style = InformStyle()
     style.font = UIFont(name: "American Typewriter", size: 16)
-    style.textColor = UIColor.brownColor()
+//    style.textColor = UIColor.brownColor()
     style.border = 0
     style.declineIcon = UIImage(named: "white-crs")
     style.acceptIcon = UIImage(named: "white-chk")

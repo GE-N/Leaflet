@@ -52,7 +52,7 @@ public struct PointBanner : PointUpdateBanner {
 
 public struct Onboard : OnboardBanner {
   public typealias OnboardAction = (Void -> ())
-  public let title: String!
+  public let title: NSAttributedString!
   public let iconName: String?
   public var tapAction: OnboardAction?
   public var acceptAction: OnboardAction?
@@ -60,7 +60,13 @@ public struct Onboard : OnboardBanner {
   public var presentation: LeafletPresentation!
   
   public init(title: String, iconName: String?) {
-    self.title = title
+    self.title = NSAttributedString(string: title)
+    self.iconName = iconName
+    presentation = .Bottom
+  }
+  
+  public init(attrTitle: NSAttributedString, iconName: String?) {
+    self.title = attrTitle
     self.iconName = iconName
     presentation = .Bottom
   }

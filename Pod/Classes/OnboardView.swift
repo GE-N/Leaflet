@@ -24,7 +24,7 @@ public protocol OnboardViewDelegate {
 }
 
 public protocol OnboardBanner {
-  var title: String! { get }
+  var title: NSAttributedString! { get }
   var iconName: String? { get }
   var tapAction: (Void -> ())? { get }
   var acceptAction: (Void -> ())? { get }
@@ -92,7 +92,7 @@ public class OnboardView: UIView, LeafletItem {
   
   var details: OnboardBanner! {
     didSet {
-      textLabel.text = details.title
+      textLabel.attributedText = details.title
       textLabel.sizeToFit()
       
       if details.iconName != nil {
