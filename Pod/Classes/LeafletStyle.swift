@@ -32,9 +32,9 @@ public struct DefaultStyle : LeafletStyle {
   
   public init() {
     backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
-    font            = UIFont.systemFontOfSize(14)
-    textColor       = UIColor.blackColor()
-    alignment       = .Left
+    font            = UIFont.systemFont(ofSize: 14)
+    textColor       = UIColor.black
+    alignment       = .left
   }
 }
 
@@ -52,11 +52,11 @@ public struct InformStyle : GenericStyle {
   
   public init() {
     backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1)
-    font            = UIFont.systemFontOfSize(14)
-    textColor       = UIColor.blackColor()
+    font            = UIFont.systemFont(ofSize: 14)
+    textColor       = UIColor.black
     
     border          = 1
-    alignment       = .Left
+    alignment       = .left
     acceptIcon      = nil
     declineIcon     = nil
     acceptBackgroundColor   = nil

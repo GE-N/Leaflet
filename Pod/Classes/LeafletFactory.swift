@@ -13,23 +13,23 @@ protocol LeafletItem {
 }
 
 public enum LeafletType {
-  case Generic(GenericBanner, LeafletStyle?, GenericInteract?)
-  case PointUpdate(PointUpdateBanner, LeafletStyle?)
-  case Onboard(OnboardBanner, LeafletStyle?)
+  case generic(GenericBanner, LeafletStyle?, GenericInteract?)
+  case pointUpdate(PointUpdateBanner, LeafletStyle?)
+  case onboard(OnboardBanner, LeafletStyle?)
 }
 
 public enum LeafletPresentation {
-  case Top(y: CGFloat?)
-  case TopWindow
-  case Bottom
+  case top(y: CGFloat?)
+  case topWindow
+  case bottom
 }
 
 struct AnimationTiming {
-  static let movement: NSTimeInterval = 0.3
-  static let switcher: NSTimeInterval = 0.1
-  static let popUp: NSTimeInterval = 1.5
-  static let loaderDuration: NSTimeInterval = 0.7
-  static let totalDelay: NSTimeInterval = popUp + movement * 2
+  static let movement: TimeInterval = 0.3
+  static let switcher: TimeInterval = 0.1
+  static let popUp: TimeInterval = 1.5
+  static let loaderDuration: TimeInterval = 0.7
+  static let totalDelay: TimeInterval = popUp + movement * 2
 }
 
 /**
@@ -60,7 +60,7 @@ let leafletFactory: LeafletFactory =  LeafletFactory()
  - parameter iconDimension: Banner image appearance.
 */
 public func Leaflet(
-  type: LeafletType,
+  _ type: LeafletType,
   on viewController: UIViewController,
   after view: UIView? = nil,
   direction: LeafletPresentation? = nil,
@@ -74,32 +74,32 @@ public func Leaflet(
     iconDimension: iconDimension)
 }
 
-public func TearOff(from viewController: UIViewController, after delay: NSTimeInterval? = 0) {
+public func TearOff(from viewController: UIViewController, after delay: TimeInterval? = 0) {
   leafletFactory.tearOff(from: viewController, after: delay!)
 }
 
-public class LeafletFactory : NSObject {
+open class LeafletFactory : NSObject {
   var leaflet: LeafletItem!
-  public var presentOnVC: UIViewController!
+  open var presentOnVC: UIViewController!
   var frontBannerView: UIView? = nil
-  var presentation: LeafletPresentation = .Top(y: nil)
-  var timer = NSTimer()
+  var presentation: LeafletPresentation = .top(y: nil)
+  var timer = Timer()
   lazy var modalWindow: UIWindow = {
-    let screenSize = UIScreen.mainScreen().bounds.size
-    var window = UIWindow(frame: CGRectMake(0, 0, screenSize.width, 64))
+    let screenSize = UIScreen.main.bounds.size
+    var window = UIWindow(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 64))
     window.windowLevel = (UIWindowLevelStatusBar + 1)
-    window.hidden = false
+    window.isHidden = false
     return window
   }()
   
-  public func stick(
-    type: LeafletType,
+  open func stick(
+    _ type: LeafletType,
     on vc: UIViewController,
     after view: UIView? = nil,
     direction: LeafletPresentation? = nil,
     iconDimension: Dimension? = nil)
   {
-    var delay: NSTimeInterval = 0
+    var delay: TimeInterval = 0
     if leafletOnViewController(vc) != nil {
       delay = AnimationTiming.movement
       dismissView()
@@ -109,7 +109,7 @@ public class LeafletFactory : NSObject {
     frontBannerView = view
     
     switch type {
-    case .Generic(let banner, let style, let interact):
+    case .generic(let banner, let style, let interact):
       leaflet = BannerView()      
       if let genericBannerView = leaflet as? BannerView {
         genericBannerView.details = banner
@@ -122,7 +122,7 @@ public class LeafletFactory : NSObject {
         
         presentation = direction ?? banner.presentation
       }
-    case .PointUpdate(let banner, let style):
+    case .pointUpdate(let banner, let style):
       leaflet = BannerPointView()
       if let pointBannerView = leaflet as? BannerPointView {
         pointBannerView.details = banner
@@ -134,7 +134,7 @@ public class LeafletFactory : NSObject {
         
         presentation = direction ?? banner.presentation
       }
-    case .Onboard(let banner, let style):
+    case .onboard(let banner, let style):
       leaflet = OnboardView()
       if let onboardView = leaflet as? OnboardView {
         onboardView.details = banner
@@ -153,12 +153,12 @@ public class LeafletFactory : NSObject {
     gcdDelay(delay){ self.presentView() }
   }
   
-  public func tearOff(from viewController: UIViewController, after delay: NSTimeInterval = 0) {
+  open func tearOff(from viewController: UIViewController, after delay: TimeInterval = 0) {
     timer.invalidate()
-    timer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: #selector(LeafletFactory.delayFired(_:)), userInfo: nil, repeats: false)
+    timer = Timer.scheduledTimer(timeInterval: delay, target: self, selector: #selector(LeafletFactory.delayFired(_:)), userInfo: nil, repeats: false)
   }
   
-  func delayFired(timer: NSTimer) {
+  func delayFired(_ timer: Timer) {
     dismissView()
   }
   
@@ -171,36 +171,36 @@ public class LeafletFactory : NSObject {
       var destPoint: CGPoint!
       
       switch presentation {
-      case .Top:
-        origin = CGPointMake(0, -CGRectGetHeight(view.frame))
-        destPoint = CGPointMake(0, 64)
-      case .Bottom:
+      case .top:
+        origin = CGPoint(x: 0, y: -view.frame.height)
+        destPoint = CGPoint(x: 0, y: 64)
+      case .bottom:
         var yPos = screenHeight
         if let tabbarController = vc.tabBarController {
-          yPos -= CGRectGetHeight(tabbarController.tabBar.frame)
+          yPos -= tabbarController.tabBar.frame.height
         }
-        origin = CGPointMake(0, yPos)
+        origin = CGPoint(x: 0, y: yPos)
         
         destPoint = origin
-        destPoint.y -= CGRectGetHeight(view.frame)
-      case .TopWindow:
-        origin = CGPointMake(0, -CGRectGetHeight(view.frame))
-        destPoint = CGPointZero
+        destPoint.y -= view.frame.height
+      case .topWindow:
+        origin = CGPoint(x: 0, y: -view.frame.height)
+        destPoint = CGPoint.zero
         showOnView = modalWindow
       }
       
-      beginPresentBanner(view, on: showOnView, move: (origin, destPoint))
+      beginPresentBanner(view, on: showOnView!, move: (origin, destPoint))
     }
   }
   
-  private func beginPresentBanner(banner: UIView,
+  fileprivate func beginPresentBanner(_ banner: UIView,
     on presentView: UIView,
     move: (from: CGPoint, to: CGPoint)) {
     
       if presentView is UIWindow {
-        modalWindow.hidden = false
+        modalWindow.isHidden = false
         modalWindow.addSubview(banner)
-        modalWindow.frame.size.height = CGRectGetHeight(banner.bounds)
+        modalWindow.frame.size.height = banner.bounds.height
       } else {
         if frontBannerView != nil {
           presentView.insertSubview(banner, belowSubview: frontBannerView!)
@@ -214,17 +214,17 @@ public class LeafletFactory : NSObject {
         banner.frame.origin = move.to
       }
       
-      UIView.animateWithDuration(
-        AnimationTiming.movement,
+      UIView.animate(
+        withDuration: AnimationTiming.movement,
         animations: animatePresentBanner,
         completion: animateBannerAfterPresent)
   }
   
-  private func animateBannerAfterPresent(animationSuccess: Bool) {
+  fileprivate func animateBannerAfterPresent(_ animationSuccess: Bool) {
     guard let banner = leaflet as? UIView else { return }
     
-    if banner.respondsToSelector(#selector(UIView.beginAnimations(_:context:))) && animationSuccess {
-        banner.performSelector(#selector(UIView.beginAnimations(_:context:)))
+    if banner.responds(to: #selector(UIView.beginAnimations(_:context:))) && animationSuccess {
+        banner.perform(#selector(UIView.beginAnimations(_:context:)))
     }
 //    if banner.respondsToSelector("beginAnimation") && animationSuccess == true {
 //      banner.performSelector("beginAnimation")
@@ -234,35 +234,35 @@ public class LeafletFactory : NSObject {
   func dismissView() {
     if let view = leaflet as? UIView {
       switch presentation {
-      case .Top:       beginDismissAnimationOnView(CGPointMake(0, -CGRectGetHeight(view.frame)))
-      case .Bottom:    beginDismissAnimationOnView(CGPointMake(0, screenHeight))
-      case .TopWindow: beginDismissAnimationOnWindow()
+      case .top:       beginDismissAnimationOnView(CGPoint(x: 0, y: -view.frame.height))
+      case .bottom:    beginDismissAnimationOnView(CGPoint(x: 0, y: screenHeight))
+      case .topWindow: beginDismissAnimationOnWindow()
       }
     }
   }
   
-  private func beginDismissAnimationOnView(destPoint: CGPoint) {
+  fileprivate func beginDismissAnimationOnView(_ destPoint: CGPoint) {
     guard leafletOnViewController(leaflet.delegate.onViewController()) != nil else { return }
     if let view = leaflet as? UIView {
-      UIView.animateWithDuration(AnimationTiming.movement, animations: {
+      UIView.animate(withDuration: AnimationTiming.movement, animations: {
         view.frame.origin = destPoint
-      }) { success in view.removeFromSuperview() }
+      }, completion: { success in view.removeFromSuperview() }) 
     }
   }
   
-  private func beginDismissAnimationOnWindow() {
+  fileprivate func beginDismissAnimationOnWindow() {
     if let view = leaflet as? UIView {
-      let destPoint = CGPointMake(0, -CGRectGetHeight(view.frame))
-      UIView.animateWithDuration(AnimationTiming.movement, animations: {
+      let destPoint = CGPoint(x: 0, y: -view.frame.height)
+      UIView.animate(withDuration: AnimationTiming.movement, animations: {
         view.frame.origin = destPoint
-      }) { success in
+      }, completion: { success in
         view.removeFromSuperview()
-        self.modalWindow.hidden = true
-      }
+        self.modalWindow.isHidden = true
+      }) 
     }
   }
   
-  private func leafletOnViewController(vc: UIViewController) -> LeafletItem? {
+  fileprivate func leafletOnViewController(_ vc: UIViewController) -> LeafletItem? {
     for view in vc.view.subviews {
       if let leaflet = view as? LeafletItem { return leaflet }
     }

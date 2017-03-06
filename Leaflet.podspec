@@ -35,5 +35,5 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'TZStackView', '1.2.0'
+  s.dependency 'TZStackView', '1.3.0'
 end

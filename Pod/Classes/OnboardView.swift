@@ -8,16 +8,16 @@
 
 import UIKit
 
-let screenBound = UIScreen.mainScreen().bounds
-let screenWidth = CGRectGetWidth(screenBound)
-let screenHeight = CGRectGetHeight(screenBound)
+let screenBound = UIScreen.main.bounds
+let screenWidth = screenBound.width
+let screenHeight = screenBound.height
 
 let onboardViewHeight = CGFloat(70)
-let onboardButtonSize = CGSizeMake(46, 70)
-let onboardCloseButtonSize = CGSizeMake(46, 70)
-let onboardCloseButtonFrame = CGRectMake(
-  screenWidth - onboardCloseButtonSize.width, 0,
-  onboardCloseButtonSize.width, onboardCloseButtonSize.height)
+let onboardButtonSize = CGSize(width: 46, height: 70)
+let onboardCloseButtonSize = CGSize(width: 46, height: 70)
+let onboardCloseButtonFrame = CGRect(
+  x: screenWidth - onboardCloseButtonSize.width, y: 0,
+  width: onboardCloseButtonSize.width, height: onboardCloseButtonSize.height)
 
 public protocol OnboardViewDelegate {
   func dismissFromViewController() -> UIViewController
@@ -26,64 +26,64 @@ public protocol OnboardViewDelegate {
 public protocol OnboardBanner {
   var title: NSAttributedString! { get }
   var iconName: String? { get }
-  var tapAction: (Void -> ())? { get }
-  var acceptAction: (Void -> ())? { get }
-  var deniedAction: (Void -> ())? { get }
+  var tapAction: ((Void) -> ())? { get }
+  var acceptAction: ((Void) -> ())? { get }
+  var deniedAction: ((Void) -> ())? { get }
   var presentation: LeafletPresentation! { get }
 }
 
-public class OnboardView: UIView, LeafletItem {
-  var dimension = Dimension(space: CGFloat(8), width: screenWidth, image: CGSizeMake(20, 20))
+open class OnboardView: UIView, LeafletItem {
+  var dimension = Dimension(space: CGFloat(8), width: screenWidth, image: CGSize(width: 20, height: 20))
   
-  public lazy var textLabel: UILabel = {
+  open lazy var textLabel: UILabel = {
     let label = UILabel()
-    label.textAlignment = .Left
-    label.textColor = UIColor.blackColor()
+    label.textAlignment = .left
+    label.textColor = UIColor.black
     label.numberOfLines = 3
     label.font = UIFont(name: "HelveticaNeue", size: 13)
-    label.frame.size.width = UIScreen.mainScreen().bounds.width - 30
+    label.frame.size.width = UIScreen.main.bounds.width - 30
     label.frame.size.height = onboardViewHeight
 
     return label
   }()
   
-  public lazy var boardImageView: UIImageView = {
+  open lazy var boardImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.contentMode = .ScaleAspectFit
+    imageView.contentMode = .scaleAspectFit
     
     return imageView
   }()
   
-  public lazy var acceptButton: UIButton = {
+  open lazy var acceptButton: UIButton = {
     let button = UIButton()
-    button.setTitle("✔︎", forState: .Normal)
-    button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
-    button.layer.borderColor = UIColor(red:0.74, green:0.76, blue:0.76, alpha:1).CGColor
+    button.setTitle("✔︎", for: UIControlState())
+    button.setTitleColor(UIColor.darkGray, for: UIControlState())
+    button.layer.borderColor = UIColor(red:0.74, green:0.76, blue:0.76, alpha:1).cgColor
     button.layer.borderWidth = 1
 
     return button
   }()
   
-  public lazy var rejectButton: UIButton = {
+  open lazy var rejectButton: UIButton = {
     let button = UIButton()
-    button.setTitle("✘", forState: .Normal)
-    button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
-    button.layer.borderColor = UIColor(red:0.74, green:0.76, blue:0.76, alpha:1).CGColor
+    button.setTitle("✘", for: UIControlState())
+    button.setTitleColor(UIColor.darkGray, for: UIControlState())
+    button.layer.borderColor = UIColor(red:0.74, green:0.76, blue:0.76, alpha:1).cgColor
     button.layer.borderWidth = 1
     
     return button
   }()
   
-  public lazy var closeButton: UIButton = {
+  open lazy var closeButton: UIButton = {
     let button = UIButton()
-    button.setTitle("✕", forState: .Normal)
-    button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-    button.backgroundColor = UIColor.blackColor()
+    button.setTitle("✕", for: UIControlState())
+    button.setTitleColor(UIColor.white, for: UIControlState())
+    button.backgroundColor = UIColor.black
     
     return button
   }()
   
-  lazy private(set) var transformViews: [UIView] =
+  lazy fileprivate(set) var transformViews: [UIView] =
   [self.textLabel, self.boardImageView, self.acceptButton, self.rejectButton, self.closeButton]
   
   var delegate: BannerViewDelegate! {
@@ -99,9 +99,9 @@ public class OnboardView: UIView, LeafletItem {
         boardImageView.image = UIImage(named: details.iconName!)
       }
       
-      acceptButton.addTarget(self, action: #selector(OnboardView.performBoardAction(_:)), forControlEvents: .TouchUpInside)
-      rejectButton.addTarget(self, action: #selector(OnboardView.performBoardAction(_:)), forControlEvents: .TouchUpInside)
-      closeButton.addTarget(self, action: #selector(OnboardView.performBoardAction(_:)), forControlEvents: .TouchUpInside)
+      acceptButton.addTarget(self, action: #selector(OnboardView.performBoardAction(_:)), for: .touchUpInside)
+      rejectButton.addTarget(self, action: #selector(OnboardView.performBoardAction(_:)), for: .touchUpInside)
+      closeButton.addTarget(self, action: #selector(OnboardView.performBoardAction(_:)), for: .touchUpInside)
       
       if details.tapAction != nil {
         tapAction = UITapGestureRecognizer(target: self, action: #selector(OnboardView.onboardTapped(_:)))
@@ -122,22 +122,22 @@ public class OnboardView: UIView, LeafletItem {
       // Style is conformed to Generic Banner
       if let genericStyle = style as? GenericStyle {
         if let acceptIcon = genericStyle.acceptIcon {
-          acceptButton.setTitle(nil, forState: .Normal)
-          acceptButton.setImage(acceptIcon, forState: .Normal)
+          acceptButton.setTitle(nil, for: UIControlState())
+          acceptButton.setImage(acceptIcon, for: UIControlState())
         }
         
         if let acceptBGColor = genericStyle.acceptBackgroundColor {
-          acceptButton.setBackgroundImage(bgColorImage(acceptBGColor), forState: .Normal)
+          acceptButton.setBackgroundImage(bgColorImage(acceptBGColor), for: UIControlState())
         }
         
         if let declineIcon = genericStyle.declineIcon {
-          rejectButton.setTitle(nil, forState: .Normal)
-          rejectButton.setImage(declineIcon, forState: .Normal)
+          rejectButton.setTitle(nil, for: UIControlState())
+          rejectButton.setImage(declineIcon, for: UIControlState())
         }
         
         if let declineBGColor = genericStyle.declineBackgroundColor {
-          rejectButton.setBackgroundImage(bgColorImage(declineBGColor), forState: .Normal)
-          closeButton.setBackgroundImage(bgColorImage(declineBGColor), forState: .Normal)
+          rejectButton.setBackgroundImage(bgColorImage(declineBGColor), for: UIControlState())
+          closeButton.setBackgroundImage(bgColorImage(declineBGColor), for: UIControlState())
         }
         
         if let borderWidth = genericStyle.border {
@@ -150,7 +150,7 @@ public class OnboardView: UIView, LeafletItem {
   
   // Create 1px image from quartz, inspired from
   // http://stackoverflow.com/questions/9151379/is-it-possible-to-use-quartz-2d-to-make-a-uiimage-on-another-thread
-  func bgColorImage(color: UIColor) -> UIImage {
+  func bgColorImage(_ color: UIColor) -> UIImage {
     let size = CGSize(width: 1, height: 1)
     let opaque = false
     let scale: CGFloat = 0
@@ -166,11 +166,11 @@ public class OnboardView: UIView, LeafletItem {
   var tapAction: UITapGestureRecognizer?
   
   init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
     transformViews.forEach { addSubview($0) }
   }
 
-  func performBoardAction(sender: UIButton) {
+  func performBoardAction(_ sender: UIButton) {
     switch sender {
     case acceptButton:  details.acceptAction?()
     case rejectButton:  details.deniedAction?()
@@ -181,7 +181,7 @@ public class OnboardView: UIView, LeafletItem {
     }
   }
   
-  func onboardTapped(sender: UITapGestureRecognizer) {
+  func onboardTapped(_ sender: UITapGestureRecognizer) {
     details.tapAction?()
   }
   
@@ -195,12 +195,12 @@ public class OnboardView: UIView, LeafletItem {
 extension OnboardView {
   func setupFrames() {
     // TODO: Replace by autolayout.
-    frame = CGRectMake(0, screenHeight, screenWidth, onboardViewHeight)
-    var labelOrigin = CGPointMake(dimension.offset, dimension.offset)
-    var labelSize = CGSizeMake(screenWidth - (dimension.offset * 2), onboardViewHeight - (dimension.offset * 2))
+    frame = CGRect(x: 0, y: screenHeight, width: screenWidth, height: onboardViewHeight)
+    var labelOrigin = CGPoint(x: dimension.offset, y: dimension.offset)
+    var labelSize = CGSize(width: screenWidth - (dimension.offset * 2), height: onboardViewHeight - (dimension.offset * 2))
     
     if details.iconName != nil {
-      boardImageView.frame.origin = CGPointMake(dimension.offset, dimension.offset)
+      boardImageView.frame.origin = CGPoint(x: dimension.offset, y: dimension.offset)
       boardImageView.frame.size = dimension.imageSize
       
       let imageWidth = dimension.imageSize.width + dimension.offset
@@ -212,16 +212,16 @@ extension OnboardView {
       if details.deniedAction != nil {
         let xPos = screenWidth - onboardButtonSize.width
         let yPos = CGFloat(0)
-        rejectButton.frame.origin = CGPointMake(xPos, yPos)
+        rejectButton.frame.origin = CGPoint(x: xPos, y: yPos)
         rejectButton.frame.size = onboardButtonSize
         
         labelSize.width -= onboardButtonSize.width
       }
       
       if details.acceptAction != nil {
-        let xPos = CGRectGetMinX(rejectButton.frame) - onboardButtonSize.width + 1
+        let xPos = rejectButton.frame.minX - onboardButtonSize.width + 1
         let yPos = CGFloat(0)
-        acceptButton.frame.origin = CGPointMake(xPos, yPos)
+        acceptButton.frame.origin = CGPoint(x: xPos, y: yPos)
         acceptButton.frame.size = onboardButtonSize
         
         labelSize.width -= onboardButtonSize.width
@@ -232,14 +232,14 @@ extension OnboardView {
       labelSize.width -= onboardCloseButtonSize.width + dimension.offset
     }
     
-    if let labelHeight = textLabel.text?.heighWithConstrainedWidth(labelSize.width, font: textLabel.font) where labelHeight < onboardViewHeight {
+    if let labelHeight = textLabel.text?.heighWithConstrainedWidth(labelSize.width, font: textLabel.font), labelHeight < onboardViewHeight {
       labelSize.height = labelHeight
     }
     textLabel.frame.origin = labelOrigin
     textLabel.frame.size = labelSize
   }
   
-  private func isHaveOption() -> Bool {
+  fileprivate func isHaveOption() -> Bool {
     return details.acceptAction != nil && details.deniedAction != nil
   }
 }
