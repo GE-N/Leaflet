@@ -9,7 +9,7 @@
 import Foundation
 
 public struct InformBanner : GenericBanner {
-  public let title: String!
+  public let title: String
   public let imageName: String?
   public var presentation: LeafletPresentation!
   
@@ -33,7 +33,7 @@ public struct InformInteract : GenericInteract {
 
 
 public struct PointBanner : PointUpdateBanner {
-  public let title: String!
+  public let title: String
   public let imageName: String?
   public let augend: Int
   public let adder: Int
