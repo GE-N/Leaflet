@@ -16,8 +16,16 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 Leaflet is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
+For Swift 3 is ...
+
 ```ruby
-pod "Leaflet", :git => "https://github.com/GE-N/Leaflet.git"
+pod "Leaflet", :git => "https://github.com/GE-N/Leaflet.git", :tag => "0.2"
+```
+
+For Swift 2.3 is... (but we discontinue for it)
+
+```ruby
+pod "Leaflet", :git => "https://github.com/GE-N/Leaflet.git", :tag => "0.1.1"
 ```
 
 ## Author

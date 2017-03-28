@@ -16,7 +16,7 @@ public struct InformBanner : GenericBanner {
   public init(title: String, imageName: String?) {
     self.title = title
     self.imageName = imageName
-    presentation = .Top(y: nil)
+    presentation = .top(y: nil)
   }
 }
 
@@ -44,14 +44,14 @@ public struct PointBanner : PointUpdateBanner {
     self.augend = augend
     self.adder = adder
     self.imageName = iconName
-    presentation = .Top(y: nil)
+    presentation = .top(y: nil)
   }
 }
 
 
 
 public struct Onboard : OnboardBanner {
-  public typealias OnboardAction = (Void -> ())
+  public typealias OnboardAction = ((Void) -> ())
   public let title: NSAttributedString!
   public let iconName: String?
   public var tapAction: OnboardAction?
@@ -62,24 +62,24 @@ public struct Onboard : OnboardBanner {
   public init(title: String, iconName: String?) {
     self.title = NSAttributedString(string: title)
     self.iconName = iconName
-    presentation = .Bottom
+    presentation = .bottom
   }
   
   public init(attrTitle: NSAttributedString, iconName: String?) {
     self.title = attrTitle
     self.iconName = iconName
-    presentation = .Bottom
+    presentation = .bottom
   }
   
-  public mutating func setTapAction(action: OnboardAction) {
+  public mutating func setTapAction(_ action: @escaping OnboardAction) {
     self.tapAction = action
   }
   
-  public mutating func setAcceptAction(action: OnboardAction) {
+  public mutating func setAcceptAction(_ action: @escaping OnboardAction) {
     self.acceptAction = action
   }
   
-  public mutating func setDeniedAction(action: OnboardAction) {
+  public mutating func setDeniedAction(_ action: @escaping OnboardAction) {
     self.deniedAction = action
   }
 }

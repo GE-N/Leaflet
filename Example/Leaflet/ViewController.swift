@@ -12,57 +12,55 @@ import Leaflet
 class ViewController : UIViewController {
   lazy var genericBannerButton: UIButton = {
     let button = UIButton()
-    button.setTitle("Multiline with action banner", forState: .Normal)
-    button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
-    button.layer.borderColor = UIColor.grayColor().CGColor
+    button.setTitle("Multiline with action banner", for: .normal)
+    button.setTitleColor(UIColor.darkGray, for: .normal)
+    button.layer.borderColor = UIColor.gray.cgColor
     button.layer.borderWidth = 1
-    button.backgroundColor = UIColor.lightGrayColor()
+    button.backgroundColor = UIColor.lightGray
     
     return button
   }()
   
   lazy var genericCenter: UIButton = {
     let button = UIButton()
-    button.setTitle("Banner text alignment center", forState: .Normal)
-    button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
-    button.layer.borderColor = UIColor.grayColor().CGColor
+    button.setTitle("Banner text alignment center", for: .normal)
+    button.setTitleColor(UIColor.darkGray, for: .normal)
+    button.layer.borderColor = UIColor.gray.cgColor
     button.layer.borderWidth = 1
-    button.backgroundColor = UIColor.lightGrayColor()
+    button.backgroundColor = UIColor.lightGray
     
     return button
   }()
   
   lazy var tokenUpdateButton: UIButton = {
     let button = UIButton()
-    button.setTitle("Token update", forState: .Normal)
-    button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
-    button.layer.borderColor = UIColor.grayColor().CGColor
+    button.setTitle("Token update", for: .normal)
+    button.setTitleColor(UIColor.darkGray, for: .normal)
+    button.layer.borderColor = UIColor.gray.cgColor
     button.layer.borderWidth = 1
-    button.backgroundColor = UIColor.lightGrayColor()
+    button.backgroundColor = UIColor.lightGray
     
     return button
   }()
   
   lazy var onboardButton: UIButton = { [unowned self] in
     let button = UIButton()
-    let tapAction = #selector(ViewController.onboardButtonDidPress(_:))
-    button.addTarget(self, action: tapAction, forControlEvents: .TouchUpInside)
-    button.setTitle("Onboard with options", forState: .Normal)
-    button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
-    button.layer.borderColor = UIColor.grayColor().CGColor
+    button.setTitle("Onboard with options", for: .normal)
+    button.setTitleColor(UIColor.darkGray, for: .normal)
+    button.layer.borderColor = UIColor.gray.cgColor
     button.layer.borderWidth = 1
-    button.backgroundColor = UIColor.lightGrayColor()
+    button.backgroundColor = UIColor.lightGray
     
     return button
   }()
   
   lazy var onboardNoOption: UIButton = {
     let button = UIButton()
-    button.setTitle("Onboard without option", forState: .Normal)
-    button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
-    button.layer.borderColor = UIColor.grayColor().CGColor
+    button.setTitle("Onboard without option", for: .normal)
+    button.setTitleColor(UIColor.darkGray, for: .normal)
+    button.layer.borderColor = UIColor.gray.cgColor
     button.layer.borderWidth = 1
-    button.backgroundColor = UIColor.lightGrayColor()
+    button.backgroundColor = UIColor.lightGray
     
     return button
   }()
@@ -72,27 +70,25 @@ class ViewController : UIViewController {
     
     let rightBarButtonAction = #selector(ViewController.rightBarButton)
     navigationItem.rightBarButtonItem =
-      UIBarButtonItem(title: "Action", style: .Plain, target: self, action: rightBarButtonAction)
+      UIBarButtonItem(title: "Action", style: .plain, target: self, action: rightBarButtonAction)
     
     title = "Leaflet events"
-    view.backgroundColor = UIColor.whiteColor()
+    view.backgroundColor = UIColor.white
     
-    let genericBannerTapped = #selector(ViewController.genericBannerTapped(_:))
     view.addSubview(genericBannerButton)
-    genericBannerButton.addTarget(self, action: genericBannerTapped, forControlEvents: .TouchUpInside)
+    genericBannerButton.addTarget(self, action: #selector(genericBannerTapped(sender:)), for: .touchUpInside)
     
     view.addSubview(genericCenter)
-    genericCenter.addTarget(self, action: "genericCenterTapped:", forControlEvents: .TouchUpInside)
+    genericCenter.addTarget(self, action: #selector(genericCenterTapped(sender:)), for: .touchUpInside)
     
     view.addSubview(tokenUpdateButton)
-    tokenUpdateButton.addTarget(self, action: "tokenUpdateTapped:", forControlEvents: .TouchUpInside)
+    tokenUpdateButton.addTarget(self, action: #selector(tokenUpdateTapped(sender:)), for: .touchUpInside)
     
     view.addSubview(onboardButton)
-    onboardButton.addTarget(self, action: "onboardButtonDidPress:", forControlEvents: .TouchUpInside)
+    onboardButton.addTarget(self, action: #selector(onboardWithOptionDidPress(button:)), for: .touchUpInside)
     
     view.addSubview(onboardNoOption)
-    onboardNoOption.addTarget(self, action: "onboardNoActionDidPress:", forControlEvents: .TouchUpInside)
-    
+    onboardNoOption.addTarget(self, action: #selector(onboardNoActionDidPress(sender:)), for: .touchUpInside)
     
     setLayout()
   }
@@ -104,17 +100,17 @@ class ViewController : UIViewController {
   let offset: CGFloat = 15
   let buttonHeight: CGFloat = 50
   
-  private func yPosNextTo(button: UIButton) -> CGFloat {
-    return CGRectGetMaxY(button.frame) + offset
+  private func yPos(nextTo view: UIView) -> CGFloat {
+    return view.frame.maxY + offset
   }
   
   func setLayout() {
-    let buttonWidth: CGFloat = CGRectGetWidth(view.frame) - (offset * 2)
-    genericBannerButton.frame = CGRectMake(offset, 150, buttonWidth, buttonHeight)
-    genericCenter.frame = CGRectMake(offset, yPosNextTo(genericBannerButton), buttonWidth, buttonHeight)
-    tokenUpdateButton.frame = CGRectMake(offset, yPosNextTo(genericCenter), buttonWidth, buttonHeight)
-    onboardButton.frame = CGRectMake(offset, yPosNextTo(tokenUpdateButton), buttonWidth, buttonHeight)
-    onboardNoOption.frame = CGRectMake(offset, yPosNextTo(onboardButton), buttonWidth, buttonHeight)
+    let width: CGFloat = view.frame.width - (offset * 2)
+    genericBannerButton.frame = CGRect(x: offset, y: 150, width: width, height: buttonHeight)
+    genericCenter.frame = CGRect(x: offset, y: yPos(nextTo: genericBannerButton), width: width, height: buttonHeight)
+    tokenUpdateButton.frame = CGRect(x: offset, y: yPos(nextTo: genericCenter), width: width, height: buttonHeight)
+    onboardButton.frame = CGRect(x: offset, y: yPos(nextTo: tokenUpdateButton), width: width, height: buttonHeight)
+    onboardNoOption.frame = CGRect(x: offset, y: yPos(nextTo: onboardButton), width: width, height: buttonHeight)
   }
 }
 
@@ -126,20 +122,20 @@ extension ViewController {
     let banner = InformBanner(title: multilineText, imageName: nil)
     var style = InformStyle()
     
-    style.font = UIFont.boldSystemFontOfSize(19)
+    style.font = UIFont.boldSystemFont(ofSize: 19)
     var interact = InformInteract()
     interact.canSwipeUpForDismiss = true
     interact.tapAction = { print("Tapped in banner!!") }
     
-    Leaflet(.Generic(banner, style, interact), on: self)
+    Leaflet(.generic(banner, style, interact), on: self)
   }
   
   func genericCenterTapped(sender: UIButton) {
     let banner = InformBanner(title: "Connection lost", imageName: "lightblue-led")
     var style = InformStyle()
-    style.alignment = .Center
+    style.alignment = .center
     
-    Leaflet(.Generic(banner, style, nil), on: self)
+    Leaflet(.generic(banner, style, nil), on: self)
     TearOff(from: self, after: 2)
   }
   
@@ -147,31 +143,31 @@ extension ViewController {
     var banner = PointBanner(augend: 12000, adder: -1000, title: "Loose a game, Loose a game, Loose a game, Loose a game",
 //                             iconName: nil)
                              iconName: "token")
-    banner.presentation = .TopWindow
+    banner.presentation = .topWindow
     
     var style = DefaultStyle()
     style.backgroundColor = UIColor(red: 0.85, green: 0.31, blue: 0.31, alpha: 0.85)
-    style.textColor       = UIColor.whiteColor()
-    style.font            = UIFont.boldSystemFontOfSize(16)  // UIFont(name: "American Typewriter", size: 16)
+    style.textColor       = UIColor.white
+    style.font            = UIFont.boldSystemFont(ofSize: 16)  // UIFont(name: "American Typewriter", size: 16)
     
     // Present banner in top window by default action.
     //
     // Leaflet(.PointUpdate(banner, style), on: self)
     
     // Present banner by custom direction.
-    Leaflet(.PointUpdate(banner, style), on: self, direction: .Top(y: nil))
+    Leaflet(.pointUpdate(banner, style), on: self, direction: .top(y: nil))
     
     TearOff(from: self, after: 3)
   }
   
-  func onboardButtonDidPress(button: UIButton) {
+  func onboardWithOptionDidPress(button: UIButton) {
     let boardText = "Be notified when the next match is about to start. Settings"
     
-    var text = NSMutableAttributedString(string: boardText)
+    let text = NSMutableAttributedString(string: boardText)
     text.addAttributes(
-      [NSForegroundColorAttributeName : UIColor.orangeColor(),
-      NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue],
-      range: (boardText as NSString).rangeOfString("Settings"))
+      [NSForegroundColorAttributeName : UIColor.orange,
+      NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue],
+      range: (boardText as NSString).range(of: "Settings"))
     
 //    let boardText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     let iconName = "check"
@@ -187,14 +183,13 @@ extension ViewController {
     
     var style = InformStyle()
     style.font = UIFont(name: "American Typewriter", size: 16)
-//    style.textColor = UIColor.brownColor()
     style.border = 0
     style.declineIcon = UIImage(named: "white-crs")
     style.acceptIcon = UIImage(named: "white-chk")
     style.acceptBackgroundColor = UIColor(red: 0.28, green: 0.59, blue: 0.11, alpha: 1)
     style.declineBackgroundColor = UIColor(red: 0.85, green: 0.31, blue: 0.31, alpha: 1)
     
-    Leaflet(.Onboard(board, style), on: self)
+    Leaflet(.onboard(board, style), on: self)
   }
   
   func onboardNoActionDidPress(sender: UIButton) {
@@ -208,5 +203,5 @@ extension ViewController {
     var style = InformStyle()
     style.declineBackgroundColor = UIColor(red: 0.85, green: 0.31, blue: 0.31, alpha: 1)
     
-    Leaflet(.Onboard(board, style), on: self)  }
+    Leaflet(.onboard(board, style), on: self)  }
 }

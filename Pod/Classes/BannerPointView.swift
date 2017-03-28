@@ -14,45 +14,46 @@ public protocol PointUpdateBanner : GenericBanner {
   var adder: Int { get }
 }
 
-public class BannerPointView : UIView, LeafletItem {
+open class BannerPointView : UIView, LeafletItem {
   var stackView: TZStackView!
-  var dimension = Dimension(space: 8, width: screenWidth, image: CGSizeMake(32, 32))
+  var dimension = Dimension(space: 8, width: screenWidth, image: CGSize(width: 32, height: 32))
   
-  let numberFormatter: NSNumberFormatter = {
-    let formatter = NSNumberFormatter()
-    formatter.numberStyle = .DecimalStyle
+  let numberFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
     
     return formatter
   }()
   
-  public lazy var imageView: UIImageView = {
+  open lazy var imageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.contentMode = .ScaleAspectFit
+    imageView.contentMode = .scaleAspectFit
     return imageView
   }()
   
-  public lazy var textLabel: UICountingLabel = {
+  open lazy var textLabel: UICountingLabel = {
     let label = UICountingLabel()
     label.numberOfLines = 1
-    label.method = .EaseOut
+    label.method = .easeOut
     label.formatBlock = { value in
-      let formatter = NSNumberFormatter()
-      formatter.numberStyle = .DecimalStyle
-      return formatter.stringFromNumber(Int(value))
+      let formatter = NumberFormatter()
+      formatter.numberStyle = .decimal
+      let number = NSNumber(value: Int(value))
+      return formatter.string(from: number)
     }
     return label
   }()
   
-  public lazy var detailsLabel: UILabel = {
+  open lazy var detailsLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 1
     return label
   }()
   
-  let bannerFont = UIFont.systemFontOfSize(13)
+  let bannerFont = UIFont.systemFont(ofSize: 13)
   
 
-  lazy private(set) var transformViews: [UIView] = [self.textLabel, self.detailsLabel]
+  lazy fileprivate(set) var transformViews: [UIView] = [self.textLabel, self.detailsLabel]
   
   var points: Int!
   var adder: Int!
@@ -65,7 +66,7 @@ public class BannerPointView : UIView, LeafletItem {
     didSet {
       points = details.augend
       adder = details.adder
-      textLabel.countFrom(CGFloat(points), to: CGFloat(points), withDuration: 0)
+      textLabel.count(from: CGFloat(points), to: CGFloat(points), withDuration: 0)
       detailsLabel.text = "\(adderWithSigned(adder)) : \(details.title)"
       if details.imageName != nil {
         imageView.image = UIImage(named: details.imageName!)
@@ -78,14 +79,14 @@ public class BannerPointView : UIView, LeafletItem {
   }
   
   init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
   }
 
-  private func adderWithSigned(adder: Int) -> String {
+  fileprivate func adderWithSigned(_ adder: Int) -> String {
     return adder >= 0 ? "+\(adder)" : "\(adder)"
   }
   
-  private func initiateLabel(label: UILabel) {
+  fileprivate func initiateLabel(_ label: UILabel) {
     label.font = style?.font ?? bannerFont
     label.sizeToFit()
   }
@@ -94,7 +95,7 @@ public class BannerPointView : UIView, LeafletItem {
     gcdDelay(0.5){ [weak self] in
       if let point = self?.points,
         let adder = self?.adder {
-        self?.textLabel.countFrom(CGFloat(point), to: CGFloat(point + adder), withDuration: 1)
+        self?.textLabel.count(from: CGFloat(point), to: CGFloat(point + adder), withDuration: 1)
       }
     }
   }
@@ -107,11 +108,11 @@ public class BannerPointView : UIView, LeafletItem {
 // MARK: Layout
 
 extension BannerPointView {
-  private func setupFrame() {
+  fileprivate func setupFrame() {
     transformViews.forEach { initiateLabel($0 as! UILabel) }
     
     frame = delegate.onViewController().view.frame
-    frame.size.height = CGRectGetHeight(textLabel.frame) + (dimension.offset * 2)
+    frame.size.height = textLabel.frame.height + (dimension.offset * 2)
     
     var horizontalVisualFormat: String!
     if details.imageName != nil {
@@ -124,9 +125,9 @@ extension BannerPointView {
     
     stackView = TZStackView(arrangedSubviews: [textLabel, detailsLabel])
     stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.axis = .Horizontal
-    stackView.distribution = .Fill
-    stackView.alignment = .Fill
+    stackView.axis = .horizontal
+    stackView.distribution = .fill
+    stackView.alignment = .fill
     stackView.spacing = dimension.offset
     addSubview(stackView)
    
@@ -136,21 +137,21 @@ extension BannerPointView {
     ]
     
     let metric: [String: AnyObject] = [
-      "offset" : dimension.offset
+      "offset" : dimension.offset as AnyObject
     ]
     
-    addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-      horizontalVisualFormat,
+    addConstraints(NSLayoutConstraint.constraints(
+      withVisualFormat: horizontalVisualFormat,
       options: NSLayoutFormatOptions(rawValue: 0),
       metrics: metric, views: views))
     
-    addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
-      "V:|[details]|",
+    addConstraints(NSLayoutConstraint.constraints(
+      withVisualFormat: "V:|[details]|",
       options: NSLayoutFormatOptions(rawValue: 0),
       metrics: metric, views: views))
   }
   
-  private func setupStyle() {
+  fileprivate func setupStyle() {
     backgroundColor     = style?.backgroundColor
     textLabel.font      = style?.font
     textLabel.textColor = style?.textColor

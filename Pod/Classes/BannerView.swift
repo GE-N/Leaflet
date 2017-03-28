@@ -23,24 +23,24 @@ public protocol GenericInteract {
   var tapAction: (() -> Void)? { get }
 }
 
-public class BannerView : UIView, LeafletItem {
-  var dimension = Dimension(space: 8, width: screenWidth, image: CGSizeMake(12, 12))
+open class BannerView : UIView, LeafletItem {
+  var dimension = Dimension(space: 8, width: screenWidth, image: CGSize(width: 12, height: 12))
   
-  public lazy var textLabel: UILabel = {
+  open lazy var textLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 0
     return label
   }()
   
-  public lazy var imageView: UIImageView = {
+  open lazy var imageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.contentMode = .ScaleAspectFit
+    imageView.contentMode = .scaleAspectFit
     return imageView
   }()
   
-  var bannerFont: UIFont = UIFont.systemFontOfSize(13)
+  var bannerFont: UIFont = UIFont.systemFont(ofSize: 13)
   
-  lazy private(set) var transformViews: [UIView] = [self.textLabel, self.imageView]
+  lazy fileprivate(set) var transformViews: [UIView] = [self.textLabel, self.imageView]
   var delegate: BannerViewDelegate! {
     didSet { self.setupFrame() }
   }
@@ -62,7 +62,7 @@ public class BannerView : UIView, LeafletItem {
   }
   
   init() {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
     textLabel.font = bannerFont
     transformViews.forEach { addSubview($0) }
   }
@@ -74,16 +74,16 @@ public class BannerView : UIView, LeafletItem {
 
 extension BannerView {
   func setupFrame() {
-    var labelFrame = CGRectMake(dimension.offset, dimension.offset,
-      CGRectGetWidth(delegate.onViewController().view.frame) - (dimension.offset * 2), 0)
+    var labelFrame = CGRect(x: dimension.offset, y: dimension.offset,
+      width: delegate.onViewController().view.frame.width - (dimension.offset * 2), height: 0)
     
     if details.imageName != nil {
-      imageView.frame = CGRectMake(dimension.offset, dimension.offset, 0, 0)
+      imageView.frame = CGRect(x: dimension.offset, y: dimension.offset, width: 0, height: 0)
       imageView.frame.size = dimension.imageSize
       imageView.image = UIImage(named: details.imageName!)
       
-      labelFrame.origin.x = CGRectGetMaxX(imageView.frame) + dimension.offset
-      labelFrame.size.width -= CGRectGetWidth(imageView.frame) + dimension.offset
+      labelFrame.origin.x = imageView.frame.maxX + dimension.offset
+      labelFrame.size.width -= imageView.frame.width + dimension.offset
     }
     
     let textHeight = textLabelHeight(labelFrame.size.width)
@@ -93,18 +93,18 @@ extension BannerView {
     frame = delegate.onViewController().view.frame
     frame.size.height = textHeight + (dimension.offset * 2)
     
-    if textLabel.textAlignment == .Center {
+    if textLabel.textAlignment == .center {
       textLabel.sizeToFit()
       textLabel.center = center
       
       if details.imageName != nil {
         textLabel.center.x += dimension.imageSize.width + dimension.offset
-        imageView.frame.origin.x = CGRectGetMinX(textLabel.frame) - dimension.imageSize.width - dimension.offset
+        imageView.frame.origin.x = textLabel.frame.minX - dimension.imageSize.width - dimension.offset
       }
     }
   }
   
-  private func textLabelHeight(width: CGFloat) -> CGFloat {
+  fileprivate func textLabelHeight(_ width: CGFloat) -> CGFloat {
     return details.title.heighWithConstrainedWidth(width, font: bannerFont)
   }
 }
@@ -112,10 +112,10 @@ extension BannerView {
 extension BannerView {
   func setupStyle() {
     backgroundColor         = style?.backgroundColor
-    textLabel.textAlignment = style?.alignment ?? .Left
+    textLabel.textAlignment = style?.alignment ?? .left
     textLabel.font          = style?.font
     textLabel.textColor     = style?.textColor
-    bannerFont              = style?.font ?? UIFont.systemFontOfSize(13)
+    bannerFont              = style?.font ?? UIFont.systemFont(ofSize: 13)
   }
 }
 
@@ -124,7 +124,7 @@ extension BannerView {
   func setupInteract() {
     if interact?.canSwipeUpForDismiss == true {
       let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(BannerView.performSwipeUp(_:)))
-      swipeUp.direction = .Up
+      swipeUp.direction = .up
       addGestureRecognizer(swipeUp)
     }
     
@@ -134,11 +134,11 @@ extension BannerView {
     }
   }
   
-  func performSwipeUp(gesture: UISwipeGestureRecognizer) {
+  func performSwipeUp(_ gesture: UISwipeGestureRecognizer) {
     TearOff(from: delegate.onViewController())
   }
   
-  func performTap(gesture: UITapGestureRecognizer) {
+  func performTap(_ gesture: UITapGestureRecognizer) {
     interact?.tapAction?()
   }
 }

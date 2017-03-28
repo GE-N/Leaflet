@@ -8,9 +8,9 @@
 
 import Foundation
 
-func gcdDelay(time: NSTimeInterval, closure: (Void -> ())) {
-  let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(time * Double(NSEC_PER_SEC)))
-  dispatch_after(delayTime, dispatch_get_main_queue()) {
+func gcdDelay(_ time: TimeInterval, closure: @escaping ((Void) -> ())) {
+  let delayTime = DispatchTime.now() + Double(Int64(time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+  DispatchQueue.main.asyncAfter(deadline: delayTime) {
     closure()
   }
 }
