@@ -195,39 +195,22 @@ open class OnboardView: UIView, LeafletItem {
 
 extension OnboardView {
   func setupFrames() {
-    // TODO: Replace by autolayout.
     frame = CGRect(x: 0, y: screenHeight, width: screenWidth, height: onboardViewHeight)
-//    var labelOrigin = CGPoint(x: dimension.offset, y: dimension.offset)
-//    var labelSize = CGSize(width: screenWidth - (dimension.offset * 2), height: onboardViewHeight - (dimension.offset * 2))
-    
     var leftMostView: UIView? = nil
     var rightMostView: UIView? = nil
     
     if details.iconName != nil {
       boardImageView.snp.makeConstraints {
-        $0.top.equalTo(dimension.offset)
+        $0.centerY.equalTo(self.snp.centerY)
         $0.left.equalTo(dimension.offset)
         $0.size.equalTo(dimension.imageSize)
       }
       
       leftMostView = boardImageView
-//      boardImageView.frame.origin = CGPoint(x: dimension.offset, y: dimension.offset)
-//      boardImageView.frame.size = dimension.imageSize
-//      
-//      let imageWidth = dimension.imageSize.width + dimension.offset
-//      labelOrigin.x += imageWidth
-//      labelSize.width -= imageWidth
     }
     
     if isHaveOption() {
       if details.deniedAction != nil {
-//        let xPos = screenWidth - onboardButtonSize.width
-//        let yPos = CGFloat(0)
-//        rejectButton.frame.origin = CGPoint(x: xPos, y: yPos)
-//        rejectButton.frame.size = onboardButtonSize
-//        
-//        labelSize.width -= onboardButtonSize.width
-        
         rejectButton.snp.makeConstraints {
           $0.size.equalTo(onboardButtonSize)
           $0.right.equalTo(0)
@@ -238,13 +221,6 @@ extension OnboardView {
       }
       
       if details.acceptAction != nil {
-//        let xPos = rejectButton.frame.minX - onboardButtonSize.width + 1
-//        let yPos = CGFloat(0)
-//        acceptButton.frame.origin = CGPoint(x: xPos, y: yPos)
-//        acceptButton.frame.size = onboardButtonSize
-//        
-//        labelSize.width -= onboardButtonSize.width
-        
         acceptButton.snp.makeConstraints {
           $0.size.equalTo(onboardButtonSize)
           $0.right.equalTo(rejectButton.snp.left)
@@ -259,9 +235,6 @@ extension OnboardView {
         $0.right.equalTo(0)
         $0.top.equalTo(0)
       }
-//      closeButton.frame = onboardCloseButtonFrame
-
-//      labelSize.width -= onboardCloseButtonSize.width + dimension.offset
       
       rightMostView = closeButton
     }
@@ -269,15 +242,9 @@ extension OnboardView {
     textLabel.snp.makeConstraints {
       $0.top.equalTo(dimension.offset)
       $0.left.equalTo(leftMostView?.snp.right ?? self).offset(8)
-      $0.right.equalTo(rightMostView?.snp.right ?? self).offset(8)
+      $0.right.equalTo(rightMostView?.snp.left ?? self).offset(-8)
       $0.bottom.equalTo(-dimension.offset)
     }
-    
-//    if let labelHeight = textLabel.text?.heighWithConstrainedWidth(labelSize.width, font: textLabel.font), labelHeight < onboardViewHeight {
-//      labelSize.height = labelHeight
-//    }
-//    textLabel.frame.origin = labelOrigin
-//    textLabel.frame.size = labelSize
   }
   
   fileprivate func isHaveOption() -> Bool {
