@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 let screenBound = UIScreen.main.bounds
 let screenWidth = screenBound.width
@@ -95,16 +96,16 @@ open class OnboardView: UIView, LeafletItem {
       textLabel.attributedText = details.title
       textLabel.sizeToFit()
       
-      if details.iconName != nil {
-        boardImageView.image = UIImage(named: details.iconName!)
+      if let detailsIcon = details.iconName {
+        boardImageView.image = UIImage(named: detailsIcon)
       }
       
-      acceptButton.addTarget(self, action: #selector(OnboardView.performBoardAction(_:)), for: .touchUpInside)
-      rejectButton.addTarget(self, action: #selector(OnboardView.performBoardAction(_:)), for: .touchUpInside)
-      closeButton.addTarget(self, action: #selector(OnboardView.performBoardAction(_:)), for: .touchUpInside)
+      acceptButton.addTarget(self, action: #selector(performBoardAction(_:)), for: .touchUpInside)
+      rejectButton.addTarget(self, action: #selector(performBoardAction(_:)), for: .touchUpInside)
+      closeButton.addTarget(self, action: #selector(performBoardAction(_:)), for: .touchUpInside)
       
       if details.tapAction != nil {
-        tapAction = UITapGestureRecognizer(target: self, action: #selector(OnboardView.onboardTapped(_:)))
+        tapAction = UITapGestureRecognizer(target: self, action: #selector(onboardTapped(_:)))
         addGestureRecognizer(tapAction!)
       }
       
@@ -196,47 +197,87 @@ extension OnboardView {
   func setupFrames() {
     // TODO: Replace by autolayout.
     frame = CGRect(x: 0, y: screenHeight, width: screenWidth, height: onboardViewHeight)
-    var labelOrigin = CGPoint(x: dimension.offset, y: dimension.offset)
-    var labelSize = CGSize(width: screenWidth - (dimension.offset * 2), height: onboardViewHeight - (dimension.offset * 2))
+//    var labelOrigin = CGPoint(x: dimension.offset, y: dimension.offset)
+//    var labelSize = CGSize(width: screenWidth - (dimension.offset * 2), height: onboardViewHeight - (dimension.offset * 2))
+    
+    var leftMostView: UIView? = nil
+    var rightMostView: UIView? = nil
     
     if details.iconName != nil {
-      boardImageView.frame.origin = CGPoint(x: dimension.offset, y: dimension.offset)
-      boardImageView.frame.size = dimension.imageSize
+      boardImageView.snp.makeConstraints {
+        $0.top.equalTo(dimension.offset)
+        $0.left.equalTo(dimension.offset)
+        $0.size.equalTo(dimension.imageSize)
+      }
       
-      let imageWidth = dimension.imageSize.width + dimension.offset
-      labelOrigin.x += imageWidth
-      labelSize.width -= imageWidth
+      leftMostView = boardImageView
+//      boardImageView.frame.origin = CGPoint(x: dimension.offset, y: dimension.offset)
+//      boardImageView.frame.size = dimension.imageSize
+//      
+//      let imageWidth = dimension.imageSize.width + dimension.offset
+//      labelOrigin.x += imageWidth
+//      labelSize.width -= imageWidth
     }
     
     if isHaveOption() {
       if details.deniedAction != nil {
-        let xPos = screenWidth - onboardButtonSize.width
-        let yPos = CGFloat(0)
-        rejectButton.frame.origin = CGPoint(x: xPos, y: yPos)
-        rejectButton.frame.size = onboardButtonSize
+//        let xPos = screenWidth - onboardButtonSize.width
+//        let yPos = CGFloat(0)
+//        rejectButton.frame.origin = CGPoint(x: xPos, y: yPos)
+//        rejectButton.frame.size = onboardButtonSize
+//        
+//        labelSize.width -= onboardButtonSize.width
         
-        labelSize.width -= onboardButtonSize.width
+        rejectButton.snp.makeConstraints {
+          $0.size.equalTo(onboardButtonSize)
+          $0.right.equalTo(0)
+          $0.top.equalTo(0)
+        }
+        
+        rightMostView = rejectButton
       }
       
       if details.acceptAction != nil {
-        let xPos = rejectButton.frame.minX - onboardButtonSize.width + 1
-        let yPos = CGFloat(0)
-        acceptButton.frame.origin = CGPoint(x: xPos, y: yPos)
-        acceptButton.frame.size = onboardButtonSize
+//        let xPos = rejectButton.frame.minX - onboardButtonSize.width + 1
+//        let yPos = CGFloat(0)
+//        acceptButton.frame.origin = CGPoint(x: xPos, y: yPos)
+//        acceptButton.frame.size = onboardButtonSize
+//        
+//        labelSize.width -= onboardButtonSize.width
         
-        labelSize.width -= onboardButtonSize.width
+        acceptButton.snp.makeConstraints {
+          $0.size.equalTo(onboardButtonSize)
+          $0.right.equalTo(rejectButton.snp.left)
+          $0.top.equalTo(rejectButton.snp.top)
+        }
+        
+        rightMostView = acceptButton
       }
     } else {
-      closeButton.frame = onboardCloseButtonFrame
+      closeButton.snp.makeConstraints {
+        $0.size.equalTo(onboardButtonSize)
+        $0.right.equalTo(0)
+        $0.top.equalTo(0)
+      }
+//      closeButton.frame = onboardCloseButtonFrame
+
+//      labelSize.width -= onboardCloseButtonSize.width + dimension.offset
       
-      labelSize.width -= onboardCloseButtonSize.width + dimension.offset
+      rightMostView = closeButton
     }
     
-    if let labelHeight = textLabel.text?.heighWithConstrainedWidth(labelSize.width, font: textLabel.font), labelHeight < onboardViewHeight {
-      labelSize.height = labelHeight
+    textLabel.snp.makeConstraints {
+      $0.top.equalTo(dimension.offset)
+      $0.left.equalTo(leftMostView?.snp.right ?? self).offset(8)
+      $0.right.equalTo(rightMostView?.snp.right ?? self).offset(8)
+      $0.bottom.equalTo(-dimension.offset)
     }
-    textLabel.frame.origin = labelOrigin
-    textLabel.frame.size = labelSize
+    
+//    if let labelHeight = textLabel.text?.heighWithConstrainedWidth(labelSize.width, font: textLabel.font), labelHeight < onboardViewHeight {
+//      labelSize.height = labelHeight
+//    }
+//    textLabel.frame.origin = labelOrigin
+//    textLabel.frame.size = labelSize
   }
   
   fileprivate func isHaveOption() -> Bool {
