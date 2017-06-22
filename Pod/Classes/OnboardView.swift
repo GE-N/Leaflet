@@ -41,9 +41,9 @@ open class OnboardView: UIView, LeafletItem {
     label.textAlignment = .left
     label.textColor = UIColor.black
     label.numberOfLines = 3
+    label.minimumScaleFactor = 0.5
+    label.adjustsFontSizeToFitWidth = true
     label.font = UIFont(name: "HelveticaNeue", size: 13)
-    label.frame.size.width = UIScreen.main.bounds.width - 30
-    label.frame.size.height = onboardViewHeight
 
     return label
   }()
