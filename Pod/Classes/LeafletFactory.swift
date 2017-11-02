@@ -86,7 +86,8 @@ open class LeafletFactory : NSObject {
   var timer = Timer()
   lazy var modalWindow: UIWindow = {
     let screenSize = UIScreen.main.bounds.size
-    var window = UIWindow(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 64))
+    let yPos: CGFloat = UIDevice.current.isIphoneX ? 44 : 0
+    var window = UIWindow(frame: CGRect(x: 0, y: yPos, width: screenSize.width, height: 64))
     window.windowLevel = (UIWindowLevelStatusBar + 1)
     window.isHidden = false
     return window
@@ -132,7 +133,7 @@ open class LeafletFactory : NSObject {
           pointBannerView.dimension = iconDimension!
         }
         
-        presentation = direction ?? banner.presentation
+        presentation = banner.presentation // direction ?? banner.presentation
       }
     case .onboard(let banner, let style):
       leaflet = OnboardView()
@@ -184,7 +185,7 @@ open class LeafletFactory : NSObject {
         destPoint = origin
         destPoint.y -= view.frame.height
       case .topWindow:
-        origin = CGPoint(x: 0, y: -view.frame.height)
+        origin = CGPoint(x: 0, y: -view.frame.height * 1.5)
         destPoint = CGPoint.zero
         showOnView = modalWindow
       }
@@ -196,11 +197,10 @@ open class LeafletFactory : NSObject {
   fileprivate func beginPresentBanner(_ banner: UIView,
     on presentView: UIView,
     move: (from: CGPoint, to: CGPoint)) {
-    
       if presentView is UIWindow {
         modalWindow.isHidden = false
         modalWindow.addSubview(banner)
-        modalWindow.frame.size.height = banner.bounds.height
+        modalWindow.frame.size.height = banner.bounds.height        
       } else {
         if frontBannerView != nil {
           presentView.insertSubview(banner, belowSubview: frontBannerView!)
@@ -252,7 +252,7 @@ open class LeafletFactory : NSObject {
   
   fileprivate func beginDismissAnimationOnWindow() {
     if let view = leaflet as? UIView {
-      let destPoint = CGPoint(x: 0, y: -view.frame.height)
+      let destPoint = CGPoint(x: 0, y: -view.frame.height * 1.5)
       UIView.animate(withDuration: AnimationTiming.movement, animations: {
         view.frame.origin = destPoint
       }, completion: { success in
