@@ -180,7 +180,7 @@ open class LeafletFactory : NSObject {
         if let tabbarController = vc.tabBarController {
           yPos -= tabbarController.tabBar.frame.height
         }
-        yPos -= (UIDevice.current.isIphoneX ? 20 : 0)
+//        yPos -= (UIDevice.current.isIphoneX ? 20 : 0)
         origin = CGPoint(x: 0, y: yPos)
         
         destPoint = origin
