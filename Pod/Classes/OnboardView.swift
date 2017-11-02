@@ -27,9 +27,9 @@ public protocol OnboardViewDelegate {
 public protocol OnboardBanner {
   var title: NSAttributedString! { get }
   var iconName: String? { get }
-  var tapAction: ((Void) -> ())? { get }
-  var acceptAction: ((Void) -> ())? { get }
-  var deniedAction: ((Void) -> ())? { get }
+  var tapAction: (() -> Void)? { get }
+  var acceptAction: (() -> Void)? { get }
+  var deniedAction: (() -> Void)? { get }
   var presentation: LeafletPresentation! { get }
 }
 
