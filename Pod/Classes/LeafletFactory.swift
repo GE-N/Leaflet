@@ -59,19 +59,9 @@ let leafletFactory: LeafletFactory =  LeafletFactory()
  - parameter direction: Customed direction need to present banner. Can be 3 types 'TopWindow, Top, Bottom'.
  - parameter iconDimension: Banner image appearance.
 */
-public func Leaflet(
-  _ type: LeafletType,
-  on viewController: UIViewController,
-  after view: UIView? = nil,
-  direction: LeafletPresentation? = nil,
-  iconDimension: Dimension? = nil)
-{
-  leafletFactory.stick(
-    type,
-    on: viewController,
-    after: view,
-    direction: direction,
-    iconDimension: iconDimension)
+public func Leaflet(_ type: LeafletType, on viewController: UIViewController, after view: UIView? = nil,
+  direction: LeafletPresentation? = nil, iconDimension: Dimension? = nil) {
+  leafletFactory.stick(type, on: viewController, after: view, direction: direction, iconDimension: iconDimension)
 }
 
 public func TearOff(from viewController: UIViewController, after delay: TimeInterval? = 0) {
@@ -164,35 +154,35 @@ open class LeafletFactory : NSObject {
   }
   
   func presentView() {
-    if let view = leaflet as? UIView {
-      let vc = leaflet.delegate.onViewController()
-      var showOnView = vc.view
-      
-      var origin: CGPoint!
-      var destPoint: CGPoint!
-      
-      switch presentation {
-      case .top:
-        origin = CGPoint(x: 0, y: -view.frame.height)
-        destPoint = CGPoint(x: 0, y: 64)
-      case .bottom:
-        var yPos = screenHeight
-        if let tabbarController = vc.tabBarController {
-          yPos -= tabbarController.tabBar.frame.height
-        }
-//        yPos -= (UIDevice.current.isIphoneX ? 20 : 0)
-        origin = CGPoint(x: 0, y: yPos)
-        
-        destPoint = origin
-        destPoint.y -= view.frame.height
-      case .topWindow:
-        origin = CGPoint(x: 0, y: -view.frame.height * 1.5)
-        destPoint = CGPoint.zero
-        showOnView = modalWindow
+    guard let view = leaflet as? UIView else { return }
+    
+    let vc = leaflet.delegate.onViewController()
+    var showOnView = vc.view
+    
+    var origin: CGPoint!
+    var destPoint: CGPoint!
+    
+    switch presentation {
+    case .top:
+      origin = CGPoint(x: 0, y: -view.frame.height)
+      destPoint = CGPoint(x: 0, y: CGFloat(64 + (UIDevice.current.isIphoneX ? 20 : 0)))
+    case .bottom:
+      var yPos = screenHeight
+      if let tabbarController = vc.tabBarController {
+        yPos -= tabbarController.tabBar.frame.height
       }
+      //        yPos -= (UIDevice.current.isIphoneX ? 20 : 0)
+      origin = CGPoint(x: 0, y: yPos)
       
-      beginPresentBanner(view, on: showOnView!, move: (origin, destPoint))
+      destPoint = origin
+      destPoint.y -= view.frame.height
+    case .topWindow:
+      origin = CGPoint(x: 0, y: -view.frame.height * 1.5)
+      destPoint = CGPoint.zero
+      showOnView = modalWindow
     }
+    
+    beginPresentBanner(view, on: showOnView!, move: (origin, destPoint))
   }
   
   fileprivate func beginPresentBanner(_ banner: UIView,
