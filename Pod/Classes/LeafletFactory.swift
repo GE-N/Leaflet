@@ -163,9 +163,15 @@ open class LeafletFactory : NSObject {
     var destPoint: CGPoint!
     
     switch presentation {
-    case .top:
+    case .top(let y):
       origin = CGPoint(x: 0, y: -view.frame.height)
-      destPoint = CGPoint(x: 0, y: CGFloat(64 + (UIDevice.current.isIphoneX ? 20 : 0)))
+      
+      if let yOffset = y {
+        destPoint = CGPoint(x: 0, y: yOffset)
+      } else {
+        destPoint = CGPoint(x: 0, y: CGFloat(64 + (UIDevice.current.isIphoneX ? 20 : 0)))
+      }
+      
     case .bottom:
       var yPos = screenHeight
       if let tabbarController = vc.tabBarController {
