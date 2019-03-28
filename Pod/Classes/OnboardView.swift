@@ -171,7 +171,7 @@ open class OnboardView: UIView, LeafletItem {
     transformViews.forEach { addSubview($0) }
   }
 
-  func performBoardAction(_ sender: UIButton) {
+  @objc func performBoardAction(_ sender: UIButton) {
     switch sender {
     case acceptButton:  details.acceptAction?()
     case rejectButton:  details.deniedAction?()
@@ -182,7 +182,7 @@ open class OnboardView: UIView, LeafletItem {
     }
   }
   
-  func onboardTapped(_ sender: UITapGestureRecognizer) {
+  @objc func onboardTapped(_ sender: UITapGestureRecognizer) {
     details.tapAction?()
   }
   

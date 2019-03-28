@@ -1,6 +1,0 @@
-framework module Leaflet {
-  umbrella header "Leaflet-umbrella.h"
-
-  export *
-  module * { export * }
-}

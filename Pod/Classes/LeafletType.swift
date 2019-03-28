@@ -51,7 +51,7 @@ public struct PointBanner : PointUpdateBanner {
 
 
 public struct Onboard : OnboardBanner {
-  public typealias OnboardAction = ((Void) -> ())
+  public typealias OnboardAction = (() -> Void)
   public let title: NSAttributedString!
   public let iconName: String?
   public var tapAction: OnboardAction?

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TZStackView
 
 public protocol PointUpdateBanner : GenericBanner {
   var augend: Int { get }
@@ -15,7 +14,7 @@ public protocol PointUpdateBanner : GenericBanner {
 }
 
 open class BannerPointView : UIView, LeafletItem {
-  var stackView: TZStackView!
+  var stackView: UIStackView!
   var dimension = Dimension(space: 8, width: screenWidth, image: CGSize(width: 32, height: 32))
   
   let numberFormatter: NumberFormatter = {
@@ -123,7 +122,7 @@ extension BannerPointView {
       horizontalVisualFormat = "H:|-offset-[details]-offset-|"
     }
     
-    stackView = TZStackView(arrangedSubviews: [textLabel, detailsLabel])
+    stackView = UIStackView(arrangedSubviews: [textLabel, detailsLabel])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .horizontal
     stackView.distribution = .fill

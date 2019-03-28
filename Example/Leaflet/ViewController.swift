@@ -68,7 +68,7 @@ class ViewController : UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let rightBarButtonAction = #selector(ViewController.rightBarButton)
+    let rightBarButtonAction = #selector(rightBarButton)
     navigationItem.rightBarButtonItem =
       UIBarButtonItem(title: "Action", style: .plain, target: self, action: rightBarButtonAction)
     
@@ -93,7 +93,7 @@ class ViewController : UIViewController {
     setLayout()
   }
   
-  func rightBarButton() {
+  @objc func rightBarButton() {
     print("Tapped on right button")
   }
   
@@ -112,12 +112,38 @@ class ViewController : UIViewController {
     onboardButton.frame = CGRect(x: offset, y: yPos(nextTo: tokenUpdateButton), width: width, height: buttonHeight)
     onboardNoOption.frame = CGRect(x: offset, y: yPos(nextTo: onboardButton), width: width, height: buttonHeight)
   }
+  
+  public override func viewWillTransition(to size: CGSize,
+                                          with coordinator: UIViewControllerTransitionCoordinator) {
+    print("rotated to size \(size)")
+    
+    view.layoutSubviews()
+    
+    if let banner = view.subviews.filter({ $0 is Leaflet.OnboardView }).first {
+//      banner.snp.makeConstraints{
+//        $0.left.equalTo(self.view)
+//        $0.right.equalTo(self.view)
+//        $0.bottom.equalTo(self.view).offset(-44)
+//        $0.height.equalTo(70)
+//      }
+//      
+//      view.layoutSubviews()
+      //			print(banner)
+      //			banner.layoutSubviews()
+      //
+      ////			if let _ = UserDefaults.standard.value(forKey: "notificationPermissionKey"),
+      ////				isNotifyInformViewPresented == false {
+      //				presentNotifySettingBannerIfNeed(.newsfeed, view: self)
+      ////			}
+    }
+    
+  }
 }
 
 // MARK: - Actions
 
 extension ViewController {
-  func genericBannerTapped(sender: UIButton) {
+  @objc func genericBannerTapped(sender: UIButton) {
     let multilineText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ***** You can swipe up on this banner for dismiss *****"
     let banner = InformBanner(title: multilineText, imageName: nil)
     var style = InformStyle()
@@ -130,7 +156,7 @@ extension ViewController {
     Leaflet(.generic(banner, style, interact), on: self)
   }
   
-  func genericCenterTapped(sender: UIButton) {
+  @objc func genericCenterTapped(sender: UIButton) {
     let banner = InformBanner(title: "Connection lost", imageName: "lightblue-led")
     var style = InformStyle()
     style.alignment = .center
@@ -139,7 +165,7 @@ extension ViewController {
     TearOff(from: self, after: 2)
   }
   
-  func tokenUpdateTapped(sender: UIButton) {
+  @objc func tokenUpdateTapped(sender: UIButton) {
     var banner = PointBanner(augend: 12000, adder: -1000, title: "Loose a game, Loose a game, Loose a game, Loose a game",
 //                             iconName: nil)
                              iconName: "token")
@@ -160,13 +186,13 @@ extension ViewController {
     TearOff(from: self, after: 3)
   }
   
-  func onboardWithOptionDidPress(button: UIButton) {
+  @objc func onboardWithOptionDidPress(button: UIButton) {
     let boardText = "Be notified when the next match is about to start. Settings"
     
     let text = NSMutableAttributedString(string: boardText)
     text.addAttributes(
-      [NSForegroundColorAttributeName : UIColor.orange,
-      NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue],
+      [.foregroundColor : UIColor.orange,
+       .underlineStyle: NSUnderlineStyle.styleSingle.rawValue],
       range: (boardText as NSString).range(of: "Settings"))
     
 //    let boardText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
@@ -192,7 +218,7 @@ extension ViewController {
     Leaflet(.onboard(board, style), on: self)
   }
   
-  func onboardNoActionDidPress(sender: UIButton) {
+  @objc func onboardNoActionDidPress(sender: UIButton) {
     let boardText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     let iconName = "check"
     

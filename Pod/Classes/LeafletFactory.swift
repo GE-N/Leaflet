@@ -146,10 +146,10 @@ open class LeafletFactory : NSObject {
   
   open func tearOff(from viewController: UIViewController, after delay: TimeInterval = 0) {
     timer.invalidate()
-    timer = Timer.scheduledTimer(timeInterval: delay, target: self, selector: #selector(LeafletFactory.delayFired(_:)), userInfo: nil, repeats: false)
+    timer = Timer.scheduledTimer(timeInterval: delay, target: self, selector: #selector(delayFired(_:)), userInfo: nil, repeats: false)
   }
   
-  func delayFired(_ timer: Timer) {
+  @objc func delayFired(_ timer: Timer) {
     dismissView()
   }
   

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "Leaflet"
-  s.version          = "0.2.6"
+  s.version          = "0.3"
   s.summary          = "A simple event notify by Swift"
 
 # This description is used to generate tags and improve search results.
@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/GE-N/Leaflet.git", :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/onoaonoa'
 
-  s.platform     = :ios, '8.0'
+  s.platform     = :ios, '9.0'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
@@ -35,6 +35,6 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'TZStackView', '1.3.0'
+  # s.dependency 'TZStackView', '1.3.0'
   s.dependency 'SnapKit', '~> 3.2'
 end

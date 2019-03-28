@@ -1,6 +1,0 @@
-framework module Pods_Leaflet_Tests {
-  umbrella header "Pods-Leaflet_Tests-umbrella.h"
-
-  export *
-  module * { export * }
-}
