@@ -1,7 +1,5 @@
 PODS:
-  - Leaflet (0.3):
-    - SnapKit (~> 4.2)
-  - SnapKit (4.2.0)
+  - Leaflet (0.3)
 
 DEPENDENCIES:
   - Leaflet (from `../`)
@@ -11,8 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Leaflet: d376d889923cb0bf3e205d1a34f761aafb8f8d89
-  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  Leaflet: a10d26817a4edc3cfda2062d6f582e58568af40e
 
 PODFILE CHECKSUM: 28562289c0752c540eb6e5eb0609d81beaa59986
 

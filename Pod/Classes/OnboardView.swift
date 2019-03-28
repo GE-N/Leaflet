@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SnapKit
 
 let screenBound = UIScreen.main.bounds
 let screenWidth = screenBound.width
@@ -199,52 +198,49 @@ extension OnboardView {
     var leftMostView: UIView? = nil
     var rightMostView: UIView? = nil
     
-    if details.iconName != nil {
-      boardImageView.snp.makeConstraints {
-        $0.centerY.equalTo(self.snp.centerY)
-        $0.left.equalTo(dimension.offset)
-        $0.size.equalTo(dimension.imageSize)
-      }
-      
+    if let _ = details.iconName {
+      boardImageView.translatesAutoresizingMaskIntoConstraints = false
+      boardImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+      boardImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: dimension.offset).isActive = true
+      boardImageView.widthAnchor.constraint(equalToConstant: dimension.imageSize.width).isActive = true
+      boardImageView.heightAnchor.constraint(equalToConstant: dimension.imageSize.height).isActive = true
       leftMostView = boardImageView
     }
     
     if isHaveOption() {
       if details.deniedAction != nil {
-        rejectButton.snp.makeConstraints {
-          $0.size.equalTo(onboardButtonSize)
-          $0.right.equalTo(0)
-          $0.top.equalTo(0)
-        }
         
+        rejectButton.translatesAutoresizingMaskIntoConstraints = false
+        rejectButton.widthAnchor.constraint(equalToConstant: onboardButtonSize.width).isActive = true
+        rejectButton.heightAnchor.constraint(equalToConstant: onboardButtonSize.height).isActive = true
+        rejectButton.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        rejectButton.topAnchor.constraint(equalTo: topAnchor).isActive = true
         rightMostView = rejectButton
       }
-      
-      if details.acceptAction != nil {
-        acceptButton.snp.makeConstraints {
-          $0.size.equalTo(onboardButtonSize)
-          $0.right.equalTo(rejectButton.snp.left)
-          $0.top.equalTo(rejectButton.snp.top)
-        }
         
+      if let _ = details.acceptAction {
+        acceptButton.translatesAutoresizingMaskIntoConstraints = false
+        acceptButton.widthAnchor.constraint(equalToConstant: onboardButtonSize.width).isActive = true
+        acceptButton.heightAnchor.constraint(equalToConstant: onboardButtonSize.height).isActive = true
+        acceptButton.rightAnchor.constraint(equalTo: rejectButton.leftAnchor).isActive = true
+        acceptButton.topAnchor.constraint(equalTo: topAnchor).isActive = true
         rightMostView = acceptButton
       }
-    } else {
-      closeButton.snp.makeConstraints {
-        $0.size.equalTo(onboardButtonSize)
-        $0.right.equalTo(0)
-        $0.top.equalTo(0)
-      }
       
+    } else {
+      closeButton.translatesAutoresizingMaskIntoConstraints = false
+      closeButton.widthAnchor.constraint(equalToConstant: onboardButtonSize.width).isActive = true
+      closeButton.heightAnchor.constraint(equalToConstant: onboardButtonSize.height).isActive = true
+      closeButton.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+      closeButton.topAnchor.constraint(equalTo: topAnchor).isActive = true
       rightMostView = closeButton
     }
     
-    textLabel.snp.makeConstraints {
-      $0.top.equalTo(dimension.offset)
-      $0.left.equalTo(leftMostView?.snp.right ?? self).offset(8)
-      $0.right.equalTo(rightMostView?.snp.left ?? self).offset(-8)
-      $0.bottom.equalTo(-dimension.offset)
-    }
+    textLabel.translatesAutoresizingMaskIntoConstraints = false
+    textLabel.topAnchor.constraint(equalTo: topAnchor, constant: dimension.offset).isActive = true
+    textLabel.leftAnchor.constraint(equalTo: (leftMostView?.rightAnchor ?? leftAnchor), constant: 8).isActive = true
+    textLabel.rightAnchor.constraint(equalTo: (rightMostView?.leftAnchor ?? rightAnchor), constant: -8).isActive = true
+    textLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -dimension.offset)
   }
   
   fileprivate func isHaveOption() -> Bool {
